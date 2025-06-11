@@ -87,24 +87,32 @@ namespace PBP
 
         private void SetupReportViewer()
         {
-            // Query berjalan lebih cepat karena ada index di Peminjaman.id_buku
+            // 1. Menyiapkan query SQL untuk mengambil data yang akan dilaporkan
             string query = @"SELECT 
-                                 b.judul, b.pengarang, b.penerbit, b.tahun_terbit, 
-                                 b.kategori, b.status, p.tanggal_pinjam, p.tanggal_kembali
-                             FROM Peminjaman AS p
-                             INNER JOIN Buku AS b ON p.id_buku = b.id_buku";
+                         b.judul, b.pengarang, b.penerbit, b.tahun_terbit, 
+                         b.kategori, b.status, p.tanggal_pinjam, p.tanggal_kembali
+                     FROM Peminjaman AS p
+                     INNER JOIN Buku AS b ON p.id_buku = b.id_buku";
 
             DataTable dt = new DataTable();
+
+            // 2. Mengambil data dari database dan mengisinya ke dalam DataTable
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 SqlDataAdapter da = new SqlDataAdapter(query, conn);
                 da.Fill(dt);
             }
 
+            // 3. Membuat sumber data untuk laporan
+            // "DataSet1" harus sama dengan nama DataSet yang Anda buat di file Report.rdlc
             ReportDataSource rds = new ReportDataSource("DataSet1", dt);
+
+            // 4. Mengkonfigurasi ReportViewer
             reportViewer1.LocalReport.DataSources.Clear();
             reportViewer1.LocalReport.DataSources.Add(rds);
             reportViewer1.LocalReport.ReportPath = @"C:\Users\Asyiraaf\Documents\PABD\Fix\PBP\Report1.rdlc";
+
+            // 5. Merefresh laporan agar data baru ditampilkan
             reportViewer1.RefreshReport();
         }
 
@@ -221,11 +229,16 @@ namespace PBP
 
         private void btnExport_Click(object sender, EventArgs e)
         {
+            // 1. Memastikan data laporan adalah yang paling baru
             SetupReportViewer();
             reportViewer1.RefreshReport();
+
+            // 2. Menyiapkan variabel untuk proses render
             string mimeType, encoding, extension;
             string[] streamIds;
             Warning[] warnings;
+
+            // 3. Merender laporan menjadi format "EXCEL" dalam bentuk byte array
             byte[] bytes = reportViewer1.LocalReport.Render(
                 format: "EXCEL",
                 deviceInfo: null,
@@ -235,12 +248,17 @@ namespace PBP
                 streams: out streamIds,
                 warnings: out warnings);
 
+            // 4. Menentukan lokasi dan nama file untuk hasil ekspor
             string customFolder = @"C:\Users\Asyiraaf\Documents\PABD\Fix\HasilExport\";
             string fileName = $"LaporanPeminjaman_{DateTime.Now:yyyyMMdd_HHmmss}.{extension}";
             string path = Path.Combine(customFolder, fileName);
 
+            // 5. Menulis byte array ke dalam file dan menampilkan pesan sukses
             File.WriteAllBytes(path, bytes);
-            MessageBox.Show($"File disimpan di:\n{path}", "Export Selesai", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show($"File disimpan di:\n{path}",
+                            "Export Selesai",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
         }
     }
 }
