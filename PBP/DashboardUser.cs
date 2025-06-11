@@ -18,7 +18,9 @@ namespace PBP
         private readonly int _anggotaId;
         private int _selectedBookId = -1;
         private Button _lastSelectedButton = null;
-        string connStr = @"Data Source=DESKTOP-A3U4VR2\SQLEXPRESS;Initial Catalog=PBP;Integrated Security=True";
+        // Gunakan satu connection string ini untuk semua operasi database
+        string connStr = @"Data Source=DESKTOP-A3U4VR2\SQLEXPRESS;Initial Catalog=PBP;Integrated Security=True"; // <--- PASTIKAN INI BENAR
+
         public DashboardUser(int anggotaId)
         {
             InitializeComponent();
@@ -35,10 +37,8 @@ namespace PBP
         private void LoadDaftarBuku()
         {
             panelBuku.Controls.Clear();
-
             using (var conn = new SqlConnection(connStr))
-            using (var cmd = new SqlCommand(
-                "SELECT id_buku, judul, status FROM Buku", conn))
+            using (var cmd = new SqlCommand("SELECT id_buku, judul, status FROM Buku", conn))
             {
                 conn.Open();
                 using (var reader = cmd.ExecuteReader())
@@ -60,13 +60,10 @@ namespace PBP
                             Top = y,
                             Text = $"{judul} [{status}]",
                             Tag = id,
-                            BackColor = status == "Tersedia"
-                                        ? SystemColors.ControlLight
-                                        : SystemColors.ControlDark,
+                            BackColor = status == "Tersedia" ? SystemColors.ControlLight : SystemColors.ControlDark,
                             Enabled = status == "Tersedia"
                         };
                         btn.Click += BukuButton_Click;
-
                         panelBuku.Controls.Add(btn);
                         y += btnHeight + margin;
                     }
@@ -79,7 +76,6 @@ namespace PBP
             var btn = (Button)sender;
             _selectedBookId = (int)btn.Tag;
 
-            // highlight pilihan
             if (_lastSelectedButton != null)
                 _lastSelectedButton.BackColor = SystemColors.ControlLight;
 
@@ -87,28 +83,18 @@ namespace PBP
             _lastSelectedButton = btn;
         }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
+        private void panel1_Paint(object sender, PaintEventArgs e) { }
 
         private void SetupReportViewer()
         {
+            // Query ini sekarang akan berjalan lebih cepat karena ada index di Peminjaman.id_buku
             string query = @"SELECT 
-                            b.judul, 
-                            b.pengarang, 
-                            b.penerbit, 
-                            b.tahun_terbit, 
-                            b.kategori, 
-                            b.status,
-                            p.tanggal_pinjam,
-                            p.tanggal_kembali
-                        FROM Peminjaman AS p
-                        INNER JOIN Buku AS b 
-                            ON p.id_buku = b.id_buku";
+                                 b.judul, b.pengarang, b.penerbit, b.tahun_terbit, 
+                                 b.kategori, b.status, p.tanggal_pinjam, p.tanggal_kembali
+                             FROM Peminjaman AS p
+                             INNER JOIN Buku AS b ON p.id_buku = b.id_buku";
 
             DataTable dt = new DataTable();
-
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 SqlDataAdapter da = new SqlDataAdapter(query, conn);
@@ -116,21 +102,17 @@ namespace PBP
             }
 
             ReportDataSource rds = new ReportDataSource("DataSet1", dt);
-
             reportViewer1.LocalReport.DataSources.Clear();
             reportViewer1.LocalReport.DataSources.Add(rds);
-
             reportViewer1.LocalReport.ReportPath = @"C:\Users\Asyiraaf\Documents\PABD\Fix\PBP\Report1.rdlc";
             reportViewer1.RefreshReport();
-
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             if (_selectedBookId < 0)
             {
-                MessageBox.Show("Pilih dulu buku yang akan dipinjam.",
-                                "Peminjaman", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Pilih dulu buku yang akan dipinjam.", "Peminjaman", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -139,14 +121,11 @@ namespace PBP
 
             if (tKembali < tPinjam)
             {
-                MessageBox.Show("Tanggal kembali harus sama atau setelah tanggal pinjam.",
-                                "Peminjaman", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Tanggal kembali harus sama atau setelah tanggal pinjam.", "Peminjaman", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            string connStr = @"Data Source=MSI\ABRA;Initial Catalog=PBP;Integrated Security=True;";
-
-            using (var conn = new SqlConnection(connStr))
+            using (var conn = new SqlConnection(connStr)) // <- Sekarang menggunakan connStr yang konsisten
             using (var cmd = new SqlCommand("InsertPeminjaman", conn))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -160,47 +139,29 @@ namespace PBP
                     conn.Open();
                     cmd.ExecuteNonQuery();
 
-                    MessageBox.Show("Peminjaman berhasil dicatat!",
-                                    "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Peminjaman berhasil dicatat!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     // === RESET SEMUA STATE ===
-                    // 1. Reload buku agar status ter-update
                     LoadDaftarBuku();
-
-                    // 2. Reset pilihan buku
                     _selectedBookId = -1;
                     if (_lastSelectedButton != null)
                     {
                         _lastSelectedButton.BackColor = SystemColors.ControlLight;
                         _lastSelectedButton = null;
                     }
-
-                    // 3. Reset tanggal pickers ke hari ini
                     dtpPinjam.Value = DateTime.Today;
                     dtpKembali.Value = DateTime.Today;
-
-                    // 4. Scroll panelBuku ke atas (opsional)
                     panelBuku.AutoScrollPosition = new Point(0, 0);
-                    // ===========================
-
                 }
                 catch (SqlException ex)
                 {
-                    MessageBox.Show($"Gagal melakukan peminjaman:\n{ex.Message}",
-                                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Gagal melakukan peminjaman:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
 
-        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e) { }
+        private void dateTimePicker2_ValueChanged(object sender, EventArgs e) { }
 
         private void btnExport_Click(object sender, EventArgs e)
         {
@@ -219,15 +180,11 @@ namespace PBP
                 warnings: out warnings);
 
             string customFolder = @"C:\Users\Asyiraaf\Documents\PABD\Fix\HasilExport\";
-
             string fileName = $"LaporanPeminjaman_{DateTime.Now:yyyyMMdd_HHmmss}.{extension}";
             string path = Path.Combine(customFolder, fileName);
 
             File.WriteAllBytes(path, bytes);
-            MessageBox.Show($"File disimpan di:\n{path}",
-                            "Export Selesai",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Information);
+            MessageBox.Show($"File disimpan di:\n{path}", "Export Selesai", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }
