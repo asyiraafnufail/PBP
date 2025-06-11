@@ -87,7 +87,7 @@ namespace PBP
 
         private void SetupReportViewer()
         {
-            // Query ini sekarang akan berjalan lebih cepat karena ada index di Peminjaman.id_buku
+            // Query berjalan lebih cepat karena ada index di Peminjaman.id_buku
             string query = @"SELECT 
                                  b.judul, b.pengarang, b.penerbit, b.tahun_terbit, 
                                  b.kategori, b.status, p.tanggal_pinjam, p.tanggal_kembali
@@ -110,6 +110,7 @@ namespace PBP
 
         private void button1_Click(object sender, EventArgs e)
         {
+            // --- Validasi Input Awal (Tidak Berubah) ---
             if (_selectedBookId < 0)
             {
                 MessageBox.Show("Pilih dulu buku yang akan dipinjam.", "Peminjaman", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -119,28 +120,61 @@ namespace PBP
             DateTime tPinjam = dtpPinjam.Value.Date;
             DateTime tKembali = dtpKembali.Value.Date;
 
+            if (tPinjam < DateTime.Today)
+            {
+                MessageBox.Show("Tanggal peminjaman tidak boleh dipilih sebelum tanggal hari ini.",
+                                "Tanggal Tidak Valid", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // Hentikan proses jika tidak valid
+            }   
+
+            if (tKembali > tPinjam.AddMonths(6))
+            {
+                MessageBox.Show("Durasi peminjaman tidak boleh lebih dari 6 bulan.",
+                                "Durasi Tidak Valid", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // Hentikan proses jika tidak valid
+            }
+
             if (tKembali < tPinjam)
             {
                 MessageBox.Show("Tanggal kembali harus sama atau setelah tanggal pinjam.", "Peminjaman", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            // --- Akhir Validasi Input ---
 
-            using (var conn = new SqlConnection(connStr)) // <- Sekarang menggunakan connStr yang konsisten
-            using (var cmd = new SqlCommand("InsertPeminjaman", conn))
+            // Menggunakan 'using' untuk memastikan koneksi selalu ditutup, bahkan saat error.
+            using (var conn = new SqlConnection(connStr))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@id_anggota", _anggotaId);
-                cmd.Parameters.AddWithValue("@id_buku", _selectedBookId);
-                cmd.Parameters.AddWithValue("@tanggal_pinjam", tPinjam);
-                cmd.Parameters.AddWithValue("@tanggal_kembali", tKembali);
+                SqlTransaction transaction = null; // Deklarasikan variabel transaksi di sini
 
                 try
                 {
+                    // 1. Buka koneksi ke database
                     conn.Open();
-                    cmd.ExecuteNonQuery();
 
+                    // 2. Mulai sebuah transaksi
+                    transaction = conn.BeginTransaction();
+
+                    // Siapkan command untuk dieksekusi di dalam transaksi
+                    using (var cmd = new SqlCommand("InsertPeminjaman", conn, transaction)) // Sertakan transaksi di command
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@id_anggota", _anggotaId);
+                        cmd.Parameters.AddWithValue("@id_buku", _selectedBookId);
+                        cmd.Parameters.AddWithValue("@tanggal_pinjam", tPinjam);
+                        cmd.Parameters.AddWithValue("@tanggal_kembali", tKembali);
+
+                        // Eksekusi perintah. Jika ini gagal, akan loncat ke blok 'catch'
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // 3. COMMIT: Jika semua perintah di atas berhasil tanpa error,
+                    // simpan perubahan secara permanen ke database.
+                    transaction.Commit();
+
+                    // Tampilkan pesan sukses HANYA SETELAH commit berhasil
                     MessageBox.Show("Peminjaman berhasil dicatat!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+                    // Reset tampilan (UI) setelah data dipastikan tersimpan
                     // === RESET SEMUA STATE ===
                     LoadDaftarBuku();
                     _selectedBookId = -1;
@@ -155,7 +189,29 @@ namespace PBP
                 }
                 catch (SqlException ex)
                 {
-                    MessageBox.Show($"Gagal melakukan peminjaman:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Terjadi kesalahan database. Perubahan dibatalkan.\n\nError: {ex.Message}",
+                                    "Gagal", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    try
+                    {
+                        // 4. ROLLBACK: Jika terjadi error di blok 'try',
+                        // batalkan SEMUA perubahan yang sudah terjadi dalam transaksi ini.
+                        if (transaction != null)
+                        {
+                            transaction.Rollback();
+                        }
+                    }
+                    catch (Exception exRollback)
+                    {
+                        // Menangani kasus langka di mana proses rollback itu sendiri gagal
+                        MessageBox.Show($"Kesalahan kritis saat mencoba melakukan rollback!\n\nError: {exRollback.Message}",
+                                        "Critical Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    }
+                }
+                finally
+                {
+                    // Koneksi akan ditutup secara otomatis oleh blok 'using'
+                    // jadi 'conn.Close()' tidak wajib di sini.
                 }
             }
         }
