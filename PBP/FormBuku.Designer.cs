@@ -44,111 +44,124 @@
             this.btnUpdate = new System.Windows.Forms.Button();
             this.btnHapus = new System.Windows.Forms.Button();
             this.dataGridViewBuku = new System.Windows.Forms.DataGridView();
-            this.cmbStatus = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewBuku)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(45, 23);
+            this.label1.Location = new System.Drawing.Point(68, 36);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(48, 16);
+            this.label1.Size = new System.Drawing.Size(78, 25);
             this.label1.TabIndex = 0;
             this.label1.Text = "IdBuku";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(45, 64);
+            this.label2.Location = new System.Drawing.Point(68, 100);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(39, 16);
+            this.label2.Size = new System.Drawing.Size(64, 25);
             this.label2.TabIndex = 1;
             this.label2.Text = "Judul";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(45, 108);
+            this.label3.Location = new System.Drawing.Point(68, 169);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(74, 16);
+            this.label3.Size = new System.Drawing.Size(117, 25);
             this.label3.TabIndex = 2;
             this.label3.Text = "Pengarang";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(45, 150);
+            this.label4.Location = new System.Drawing.Point(68, 234);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(57, 16);
+            this.label4.Size = new System.Drawing.Size(92, 25);
             this.label4.TabIndex = 3;
             this.label4.Text = "Penerbit";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(45, 183);
+            this.label5.Location = new System.Drawing.Point(68, 286);
+            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(45, 16);
+            this.label5.Size = new System.Drawing.Size(73, 25);
             this.label5.TabIndex = 4;
             this.label5.Text = "Tahun";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(45, 217);
+            this.label6.Location = new System.Drawing.Point(68, 339);
+            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(57, 16);
+            this.label6.Size = new System.Drawing.Size(92, 25);
             this.label6.TabIndex = 5;
             this.label6.Text = "Kategori";
             // 
             // txtIdBuku
             // 
-            this.txtIdBuku.Location = new System.Drawing.Point(174, 23);
+            this.txtIdBuku.Location = new System.Drawing.Point(261, 36);
+            this.txtIdBuku.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtIdBuku.Name = "txtIdBuku";
-            this.txtIdBuku.Size = new System.Drawing.Size(251, 22);
+            this.txtIdBuku.ReadOnly = true;
+            this.txtIdBuku.Size = new System.Drawing.Size(374, 31);
             this.txtIdBuku.TabIndex = 6;
             // 
             // txtJudul
             // 
-            this.txtJudul.Location = new System.Drawing.Point(174, 61);
+            this.txtJudul.Location = new System.Drawing.Point(261, 95);
+            this.txtJudul.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtJudul.Name = "txtJudul";
-            this.txtJudul.Size = new System.Drawing.Size(251, 22);
+            this.txtJudul.Size = new System.Drawing.Size(374, 31);
             this.txtJudul.TabIndex = 7;
             // 
             // txtPengarang
             // 
-            this.txtPengarang.Location = new System.Drawing.Point(174, 105);
+            this.txtPengarang.Location = new System.Drawing.Point(261, 164);
+            this.txtPengarang.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtPengarang.Name = "txtPengarang";
-            this.txtPengarang.Size = new System.Drawing.Size(251, 22);
+            this.txtPengarang.Size = new System.Drawing.Size(374, 31);
             this.txtPengarang.TabIndex = 8;
             // 
             // txtPenerbit
             // 
-            this.txtPenerbit.Location = new System.Drawing.Point(174, 144);
+            this.txtPenerbit.Location = new System.Drawing.Point(261, 225);
+            this.txtPenerbit.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtPenerbit.Name = "txtPenerbit";
-            this.txtPenerbit.Size = new System.Drawing.Size(251, 22);
+            this.txtPenerbit.Size = new System.Drawing.Size(374, 31);
             this.txtPenerbit.TabIndex = 9;
             // 
             // txtTahun
             // 
-            this.txtTahun.Location = new System.Drawing.Point(174, 177);
+            this.txtTahun.Location = new System.Drawing.Point(261, 277);
+            this.txtTahun.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtTahun.Name = "txtTahun";
-            this.txtTahun.Size = new System.Drawing.Size(251, 22);
+            this.txtTahun.Size = new System.Drawing.Size(374, 31);
             this.txtTahun.TabIndex = 10;
             // 
             // txtKategori
             // 
-            this.txtKategori.Location = new System.Drawing.Point(174, 217);
+            this.txtKategori.Location = new System.Drawing.Point(261, 339);
+            this.txtKategori.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtKategori.Name = "txtKategori";
-            this.txtKategori.Size = new System.Drawing.Size(251, 22);
+            this.txtKategori.Size = new System.Drawing.Size(374, 31);
             this.txtKategori.TabIndex = 11;
             // 
             // btnSimpan
             // 
-            this.btnSimpan.Location = new System.Drawing.Point(538, 23);
+            this.btnSimpan.Location = new System.Drawing.Point(807, 36);
+            this.btnSimpan.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnSimpan.Name = "btnSimpan";
-            this.btnSimpan.Size = new System.Drawing.Size(102, 23);
+            this.btnSimpan.Size = new System.Drawing.Size(153, 36);
             this.btnSimpan.TabIndex = 12;
             this.btnSimpan.Text = "Simpan";
             this.btnSimpan.UseVisualStyleBackColor = true;
@@ -156,9 +169,10 @@
             // 
             // btnUpdate
             // 
-            this.btnUpdate.Location = new System.Drawing.Point(538, 121);
+            this.btnUpdate.Location = new System.Drawing.Point(807, 189);
+            this.btnUpdate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnUpdate.Name = "btnUpdate";
-            this.btnUpdate.Size = new System.Drawing.Size(102, 23);
+            this.btnUpdate.Size = new System.Drawing.Size(153, 36);
             this.btnUpdate.TabIndex = 13;
             this.btnUpdate.Text = "Update";
             this.btnUpdate.UseVisualStyleBackColor = true;
@@ -166,9 +180,10 @@
             // 
             // btnHapus
             // 
-            this.btnHapus.Location = new System.Drawing.Point(538, 215);
+            this.btnHapus.Location = new System.Drawing.Point(807, 336);
+            this.btnHapus.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnHapus.Name = "btnHapus";
-            this.btnHapus.Size = new System.Drawing.Size(102, 23);
+            this.btnHapus.Size = new System.Drawing.Size(153, 36);
             this.btnHapus.TabIndex = 14;
             this.btnHapus.Text = "Hapus";
             this.btnHapus.UseVisualStyleBackColor = true;
@@ -177,27 +192,20 @@
             // dataGridViewBuku
             // 
             this.dataGridViewBuku.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewBuku.Location = new System.Drawing.Point(48, 256);
+            this.dataGridViewBuku.Location = new System.Drawing.Point(56, 415);
+            this.dataGridViewBuku.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dataGridViewBuku.Name = "dataGridViewBuku";
             this.dataGridViewBuku.RowHeadersWidth = 51;
             this.dataGridViewBuku.RowTemplate.Height = 24;
-            this.dataGridViewBuku.Size = new System.Drawing.Size(723, 182);
+            this.dataGridViewBuku.Size = new System.Drawing.Size(1084, 352);
             this.dataGridViewBuku.TabIndex = 15;
-            // 
-            // cmbStatus
-            // 
-            this.cmbStatus.FormattingEnabled = true;
-            this.cmbStatus.Location = new System.Drawing.Point(667, 56);
-            this.cmbStatus.Name = "cmbStatus";
-            this.cmbStatus.Size = new System.Drawing.Size(121, 24);
-            this.cmbStatus.TabIndex = 16;
+            this.dataGridViewBuku.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewBuku_CellClick);
             // 
             // FormBuku
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.cmbStatus);
+            this.ClientSize = new System.Drawing.Size(1200, 794);
             this.Controls.Add(this.dataGridViewBuku);
             this.Controls.Add(this.btnHapus);
             this.Controls.Add(this.btnUpdate);
@@ -214,6 +222,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "FormBuku";
             this.Text = "FormBuku";
             this.Load += new System.EventHandler(this.FormBuku_Load);
@@ -241,6 +250,5 @@
         private System.Windows.Forms.Button btnUpdate;
         private System.Windows.Forms.Button btnHapus;
         private System.Windows.Forms.DataGridView dataGridViewBuku;
-        private System.Windows.Forms.ComboBox cmbStatus;
     }
 }

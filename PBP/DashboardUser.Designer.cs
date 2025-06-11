@@ -41,8 +41,8 @@
             // 
             // dtpPinjam
             // 
-            this.dtpPinjam.Location = new System.Drawing.Point(560, 288);
-            this.dtpPinjam.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.dtpPinjam.Location = new System.Drawing.Point(368, 283);
+            this.dtpPinjam.Margin = new System.Windows.Forms.Padding(6);
             this.dtpPinjam.Name = "dtpPinjam";
             this.dtpPinjam.Size = new System.Drawing.Size(396, 31);
             this.dtpPinjam.TabIndex = 0;
@@ -50,8 +50,8 @@
             // 
             // dtpKembali
             // 
-            this.dtpKembali.Location = new System.Drawing.Point(560, 483);
-            this.dtpKembali.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.dtpKembali.Location = new System.Drawing.Point(368, 478);
+            this.dtpKembali.Margin = new System.Windows.Forms.Padding(6);
             this.dtpKembali.Name = "dtpKembali";
             this.dtpKembali.Size = new System.Drawing.Size(396, 31);
             this.dtpKembali.TabIndex = 1;
@@ -60,7 +60,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(222, 300);
+            this.label1.Location = new System.Drawing.Point(30, 295);
             this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(161, 25);
@@ -70,7 +70,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(222, 496);
+            this.label2.Location = new System.Drawing.Point(30, 491);
             this.label2.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(173, 25);
@@ -79,8 +79,8 @@
             // 
             // btnPinjam
             // 
-            this.btnPinjam.Location = new System.Drawing.Point(502, 646);
-            this.btnPinjam.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnPinjam.Location = new System.Drawing.Point(310, 641);
+            this.btnPinjam.Margin = new System.Windows.Forms.Padding(6);
             this.btnPinjam.Name = "btnPinjam";
             this.btnPinjam.Size = new System.Drawing.Size(192, 75);
             this.btnPinjam.TabIndex = 4;
@@ -91,8 +91,8 @@
             // panelBuku
             // 
             this.panelBuku.AutoScroll = true;
-            this.panelBuku.Location = new System.Drawing.Point(1020, 23);
-            this.panelBuku.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.panelBuku.Location = new System.Drawing.Point(776, 47);
+            this.panelBuku.Margin = new System.Windows.Forms.Padding(6);
             this.panelBuku.Name = "panelBuku";
             this.panelBuku.Size = new System.Drawing.Size(576, 896);
             this.panelBuku.TabIndex = 5;
@@ -100,17 +100,17 @@
             // 
             // reportViewer1
             // 
-            this.reportViewer1.Location = new System.Drawing.Point(1608, 223);
-            this.reportViewer1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.reportViewer1.Location = new System.Drawing.Point(1384, 196);
+            this.reportViewer1.Margin = new System.Windows.Forms.Padding(6);
             this.reportViewer1.Name = "reportViewer1";
             this.reportViewer1.ServerReport.BearerToken = null;
-            this.reportViewer1.Size = new System.Drawing.Size(1046, 471);
+            this.reportViewer1.Size = new System.Drawing.Size(730, 471);
             this.reportViewer1.TabIndex = 6;
             // 
             // btnExport
             // 
-            this.btnExport.Location = new System.Drawing.Point(1610, 740);
-            this.btnExport.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnExport.Location = new System.Drawing.Point(1705, 724);
+            this.btnExport.Margin = new System.Windows.Forms.Padding(6);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(248, 90);
             this.btnExport.TabIndex = 7;
@@ -121,7 +121,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(1990, 137);
+            this.label3.Location = new System.Drawing.Point(1700, 114);
             this.label3.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(203, 25);
@@ -132,7 +132,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(2564, 987);
+            this.ClientSize = new System.Drawing.Size(2129, 987);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.btnExport);
             this.Controls.Add(this.reportViewer1);
@@ -142,7 +142,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dtpKembali);
             this.Controls.Add(this.dtpPinjam);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "DashboardUser";
             this.Text = "DashboardUser";
             this.Load += new System.EventHandler(this.DashboardUser_Load);

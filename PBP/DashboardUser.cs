@@ -19,7 +19,7 @@ namespace PBP
         private int _selectedBookId = -1;
         private Button _lastSelectedButton = null;
         // Gunakan satu connection string ini untuk semua operasi database
-        string connStr = @"Data Source=DESKTOP-A3U4VR2\SQLEXPRESS;Initial Catalog=PBP;Integrated Security=True"; // <--- PASTIKAN INI BENAR
+        string connStr = @"Data Source=DESKTOP-A3U4VR2\SQLEXPRESS;Initial Catalog=PBP;Integrated Security=True";
 
         public DashboardUser(int anggotaId)
         {
