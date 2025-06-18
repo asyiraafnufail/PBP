@@ -37,11 +37,12 @@
             this.reportViewer1 = new Microsoft.Reporting.WinForms.ReportViewer();
             this.btnExport = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // dtpPinjam
             // 
-            this.dtpPinjam.Location = new System.Drawing.Point(368, 283);
+            this.dtpPinjam.Location = new System.Drawing.Point(235, 55);
             this.dtpPinjam.Margin = new System.Windows.Forms.Padding(6);
             this.dtpPinjam.Name = "dtpPinjam";
             this.dtpPinjam.Size = new System.Drawing.Size(396, 31);
@@ -50,7 +51,7 @@
             // 
             // dtpKembali
             // 
-            this.dtpKembali.Location = new System.Drawing.Point(368, 478);
+            this.dtpKembali.Location = new System.Drawing.Point(235, 98);
             this.dtpKembali.Margin = new System.Windows.Forms.Padding(6);
             this.dtpKembali.Name = "dtpKembali";
             this.dtpKembali.Size = new System.Drawing.Size(396, 31);
@@ -60,7 +61,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(30, 295);
+            this.label1.Location = new System.Drawing.Point(47, 60);
             this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(161, 25);
@@ -70,7 +71,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(30, 491);
+            this.label2.Location = new System.Drawing.Point(47, 103);
             this.label2.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(173, 25);
@@ -79,7 +80,7 @@
             // 
             // btnPinjam
             // 
-            this.btnPinjam.Location = new System.Drawing.Point(310, 641);
+            this.btnPinjam.Location = new System.Drawing.Point(225, 262);
             this.btnPinjam.Margin = new System.Windows.Forms.Padding(6);
             this.btnPinjam.Name = "btnPinjam";
             this.btnPinjam.Size = new System.Drawing.Size(192, 75);
@@ -91,16 +92,16 @@
             // panelBuku
             // 
             this.panelBuku.AutoScroll = true;
-            this.panelBuku.Location = new System.Drawing.Point(776, 47);
+            this.panelBuku.Location = new System.Drawing.Point(663, 55);
             this.panelBuku.Margin = new System.Windows.Forms.Padding(6);
             this.panelBuku.Name = "panelBuku";
-            this.panelBuku.Size = new System.Drawing.Size(576, 896);
+            this.panelBuku.Size = new System.Drawing.Size(576, 554);
             this.panelBuku.TabIndex = 5;
             this.panelBuku.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // reportViewer1
             // 
-            this.reportViewer1.Location = new System.Drawing.Point(1384, 196);
+            this.reportViewer1.Location = new System.Drawing.Point(509, 689);
             this.reportViewer1.Margin = new System.Windows.Forms.Padding(6);
             this.reportViewer1.Name = "reportViewer1";
             this.reportViewer1.ServerReport.BearerToken = null;
@@ -109,10 +110,10 @@
             // 
             // btnExport
             // 
-            this.btnExport.Location = new System.Drawing.Point(1705, 724);
+            this.btnExport.Location = new System.Drawing.Point(129, 1087);
             this.btnExport.Margin = new System.Windows.Forms.Padding(6);
             this.btnExport.Name = "btnExport";
-            this.btnExport.Size = new System.Drawing.Size(248, 90);
+            this.btnExport.Size = new System.Drawing.Size(201, 73);
             this.btnExport.TabIndex = 7;
             this.btnExport.Text = "Export to Excel";
             this.btnExport.UseVisualStyleBackColor = true;
@@ -121,18 +122,31 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(1700, 114);
+            this.label3.Location = new System.Drawing.Point(792, 658);
             this.label3.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(203, 25);
             this.label3.TabIndex = 8;
             this.label3.Text = "Buku yang Dipinjam";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(225, 399);
+            this.button1.Margin = new System.Windows.Forms.Padding(6);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(192, 75);
+            this.button1.TabIndex = 9;
+            this.button1.Text = "Kembali ke login";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.btnKembali_Click);
+            // 
             // DashboardUser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(2129, 987);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.ClientSize = new System.Drawing.Size(1314, 1241);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.btnExport);
             this.Controls.Add(this.reportViewer1);
@@ -145,6 +159,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "DashboardUser";
             this.Text = "DashboardUser";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DashboardUser_FormClosing);
             this.Load += new System.EventHandler(this.DashboardUser_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -162,5 +177,6 @@
         private Microsoft.Reporting.WinForms.ReportViewer reportViewer1;
         private System.Windows.Forms.Button btnExport;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button button1;
     }
 }

@@ -39,11 +39,5 @@ namespace PBP
             FormPeminjaman formPeminjaman = new FormPeminjaman();
             formPeminjaman.Show();
         }
-
-        private void btnPengembalian_Click(object sender, EventArgs e)
-        {
-            FormPengembalian formPengembalian = new FormPengembalian();
-            formPengembalian.Show();
-        }
     }
 }

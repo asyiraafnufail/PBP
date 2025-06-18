@@ -16,7 +16,7 @@ namespace PBP
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormLoginAdmin());
+            Application.Run(new FormLogin());
         }
     }
 }

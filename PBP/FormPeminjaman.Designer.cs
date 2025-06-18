@@ -48,7 +48,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(73, 30);
+            this.label1.Location = new System.Drawing.Point(188, 62);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(150, 25);
@@ -58,7 +58,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(74, 176);
+            this.label2.Location = new System.Drawing.Point(190, 144);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(81, 25);
@@ -68,7 +68,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(74, 104);
+            this.label3.Location = new System.Drawing.Point(190, 103);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(112, 25);
@@ -77,7 +77,7 @@
             // 
             // dtpTanggalPinjam
             // 
-            this.dtpTanggalPinjam.Location = new System.Drawing.Point(342, 247);
+            this.dtpTanggalPinjam.Location = new System.Drawing.Point(409, 182);
             this.dtpTanggalPinjam.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dtpTanggalPinjam.Name = "dtpTanggalPinjam";
             this.dtpTanggalPinjam.Size = new System.Drawing.Size(298, 31);
@@ -86,7 +86,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(74, 247);
+            this.label4.Location = new System.Drawing.Point(188, 187);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(161, 25);
@@ -96,7 +96,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(74, 327);
+            this.label5.Location = new System.Drawing.Point(188, 228);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(173, 25);
@@ -105,7 +105,7 @@
             // 
             // dtpTanggalKembali
             // 
-            this.dtpTanggalKembali.Location = new System.Drawing.Point(342, 327);
+            this.dtpTanggalKembali.Location = new System.Drawing.Point(409, 223);
             this.dtpTanggalKembali.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dtpTanggalKembali.Name = "dtpTanggalKembali";
             this.dtpTanggalKembali.Size = new System.Drawing.Size(298, 31);
@@ -113,7 +113,7 @@
             // 
             // txtIDPeminjaman
             // 
-            this.txtIDPeminjaman.Location = new System.Drawing.Point(342, 30);
+            this.txtIDPeminjaman.Location = new System.Drawing.Point(409, 59);
             this.txtIDPeminjaman.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtIDPeminjaman.Name = "txtIDPeminjaman";
             this.txtIDPeminjaman.Size = new System.Drawing.Size(298, 31);
@@ -121,7 +121,7 @@
             // 
             // txtIDAnggota
             // 
-            this.txtIDAnggota.Location = new System.Drawing.Point(342, 98);
+            this.txtIDAnggota.Location = new System.Drawing.Point(409, 100);
             this.txtIDAnggota.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtIDAnggota.Name = "txtIDAnggota";
             this.txtIDAnggota.Size = new System.Drawing.Size(298, 31);
@@ -129,7 +129,7 @@
             // 
             // txtIDBuku
             // 
-            this.txtIDBuku.Location = new System.Drawing.Point(342, 173);
+            this.txtIDBuku.Location = new System.Drawing.Point(409, 141);
             this.txtIDBuku.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtIDBuku.Name = "txtIDBuku";
             this.txtIDBuku.Size = new System.Drawing.Size(298, 31);
@@ -137,7 +137,7 @@
             // 
             // btnSimpan
             // 
-            this.btnSimpan.Location = new System.Drawing.Point(802, 41);
+            this.btnSimpan.Location = new System.Drawing.Point(869, 59);
             this.btnSimpan.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnSimpan.Name = "btnSimpan";
             this.btnSimpan.Size = new System.Drawing.Size(196, 36);
@@ -148,7 +148,7 @@
             // 
             // btnUpdate
             // 
-            this.btnUpdate.Location = new System.Drawing.Point(802, 134);
+            this.btnUpdate.Location = new System.Drawing.Point(869, 105);
             this.btnUpdate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(196, 36);
@@ -158,23 +158,24 @@
             // 
             // btnHapus
             // 
-            this.btnHapus.Location = new System.Drawing.Point(802, 222);
+            this.btnHapus.Location = new System.Drawing.Point(869, 151);
             this.btnHapus.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnHapus.Name = "btnHapus";
             this.btnHapus.Size = new System.Drawing.Size(196, 36);
             this.btnHapus.TabIndex = 12;
             this.btnHapus.Text = "Hapus";
             this.btnHapus.UseVisualStyleBackColor = true;
+            this.btnHapus.Click += new System.EventHandler(this.btnHapus_Click);
             // 
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(78, 388);
+            this.dataGridView1.Location = new System.Drawing.Point(78, 325);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(1088, 297);
+            this.dataGridView1.Size = new System.Drawing.Size(1088, 360);
             this.dataGridView1.TabIndex = 14;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 
@@ -182,6 +183,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.ClientSize = new System.Drawing.Size(1200, 703);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnHapus);

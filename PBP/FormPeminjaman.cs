@@ -1,20 +1,13 @@
-﻿using Microsoft.Reporting.Map.WebForms.BingMaps;
+﻿using MySql.Data.MySqlClient;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PBP
 {
-    public partial class FormPeminjaman: Form
+    public partial class FormPeminjaman : Form
     {
-        private readonly string connStr = "Data Source =DESKTOP-A3U4VR2\\SQLEXPRESS; Initial Catalog = PBP; Integrated Security = True";
+        private readonly string connStr = "Server=localhost;Database=db_pbp;User ID=root;Password=;";
 
         public FormPeminjaman()
         {
@@ -25,13 +18,13 @@ namespace PBP
         {
             TampilData();
         }
+
         private void TampilData()
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(connStr))
+                using (MySqlConnection conn = new MySqlConnection(connStr))
                 {
-                    //JOIN untuk menampilkan data yang lebih mudah dibaca (nama anggota dan judul buku)
                     string query = @"
                         SELECT 
                             p.id_peminjaman, 
@@ -46,7 +39,7 @@ namespace PBP
                         JOIN Buku b ON p.id_buku = b.id_buku
                         ORDER BY p.tanggal_pinjam DESC";
 
-                    SqlDataAdapter da = new SqlDataAdapter(query, conn);
+                    MySqlDataAdapter da = new MySqlDataAdapter(query, conn);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
                     dataGridView1.DataSource = dt;
@@ -76,17 +69,15 @@ namespace PBP
                 return;
             }
 
-            using (SqlConnection conn = new SqlConnection(connStr))
+            using (MySqlConnection conn = new MySqlConnection(connStr))
             {
                 conn.Open();
-                // Memulai transaksi untuk memastikan kedua operasi (INSERT dan UPDATE) berhasil
-                SqlTransaction transaction = conn.BeginTransaction();
+                MySqlTransaction transaction = conn.BeginTransaction();
 
                 try
                 {
-                    // 1. INSERT data ke tabel Peminjaman
                     string queryPeminjaman = "INSERT INTO Peminjaman (id_peminjaman, id_anggota, id_buku, tanggal_pinjam, tanggal_kembali) VALUES (@id, @idanggota, @idbuku, @tglpinjam, @tglkembali)";
-                    using (SqlCommand cmdPeminjaman = new SqlCommand(queryPeminjaman, conn, transaction))
+                    using (MySqlCommand cmdPeminjaman = new MySqlCommand(queryPeminjaman, conn, transaction))
                     {
                         cmdPeminjaman.Parameters.AddWithValue("@id", txtIDPeminjaman.Text);
                         cmdPeminjaman.Parameters.AddWithValue("@idanggota", txtIDAnggota.Text);
@@ -96,15 +87,13 @@ namespace PBP
                         cmdPeminjaman.ExecuteNonQuery();
                     }
 
-                    // 2. UPDATE status buku menjadi 'Dipinjam'
                     string queryBuku = "UPDATE Buku SET status = 'Dipinjam' WHERE id_buku = @idbuku";
-                    using (SqlCommand cmdBuku = new SqlCommand(queryBuku, conn, transaction))
+                    using (MySqlCommand cmdBuku = new MySqlCommand(queryBuku, conn, transaction))
                     {
                         cmdBuku.Parameters.AddWithValue("@idbuku", txtIDBuku.Text);
                         cmdBuku.ExecuteNonQuery();
                     }
 
-                    // Jika semua berhasil, commit transaksi
                     transaction.Commit();
                     MessageBox.Show("Data peminjaman berhasil disimpan dan status buku telah diupdate.", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -113,7 +102,6 @@ namespace PBP
                 }
                 catch (Exception ex)
                 {
-                    // Jika ada error, batalkan semua perubahan
                     transaction.Rollback();
                     MessageBox.Show($"Transaksi gagal: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -130,13 +118,13 @@ namespace PBP
 
             try
             {
-                using (SqlConnection conn = new SqlConnection(connStr))
+                using (MySqlConnection conn = new MySqlConnection(connStr))
                 {
                     conn.Open();
                     string query = "UPDATE Peminjaman SET id_anggota=@idanggota, id_buku=@idbuku, tanggal_pinjam=@tglpinjam, tanggal_kembali=@tglkembali WHERE id_peminjaman=@id";
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
-                        cmd.Parameters.AddWithValue("@id", txtIDPeminjaman.Text); // Parameter untuk WHERE
+                        cmd.Parameters.AddWithValue("@id", txtIDPeminjaman.Text);
                         cmd.Parameters.AddWithValue("@idanggota", txtIDAnggota.Text);
                         cmd.Parameters.AddWithValue("@idbuku", txtIDBuku.Text);
                         cmd.Parameters.AddWithValue("@tglpinjam", dtpTanggalPinjam.Value);
@@ -168,26 +156,23 @@ namespace PBP
                 return;
             }
 
-            using (SqlConnection conn = new SqlConnection(connStr))
+            using (MySqlConnection conn = new MySqlConnection(connStr))
             {
                 conn.Open();
-                SqlTransaction transaction = conn.BeginTransaction();
+                MySqlTransaction transaction = conn.BeginTransaction();
 
                 try
                 {
-                    // 1. Hapus data dari tabel Peminjaman
                     string queryPeminjaman = "DELETE FROM Peminjaman WHERE id_peminjaman=@id";
-                    using (SqlCommand cmdPeminjaman = new SqlCommand(queryPeminjaman, conn, transaction))
+                    using (MySqlCommand cmdPeminjaman = new MySqlCommand(queryPeminjaman, conn, transaction))
                     {
                         cmdPeminjaman.Parameters.AddWithValue("@id", txtIDPeminjaman.Text);
                         cmdPeminjaman.ExecuteNonQuery();
                     }
 
-                    // 2. UPDATE status buku menjadi 'Tersedia'
                     string queryBuku = "UPDATE Buku SET status = 'Tersedia' WHERE id_buku = @idbuku";
-                    using (SqlCommand cmdBuku = new SqlCommand(queryBuku, conn, transaction))
+                    using (MySqlCommand cmdBuku = new MySqlCommand(queryBuku, conn, transaction))
                     {
-                        // Ambil id_buku dari textbox yang sudah terisi saat user mengklik grid
                         cmdBuku.Parameters.AddWithValue("@idbuku", txtIDBuku.Text);
                         cmdBuku.ExecuteNonQuery();
                     }

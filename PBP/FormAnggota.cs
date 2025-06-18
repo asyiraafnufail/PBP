@@ -1,14 +1,13 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Data;
-using System.Data.SqlClient;
 using System.Windows.Forms;
 
 namespace PBP
 {
     public partial class FormAnggota : Form
     {
-        // Pindahkan connection string menjadi satu-satunya sumber kebenaran
-        private readonly string connStr = "Data Source=DESKTOP-A3U4VR2\\SQLEXPRESS;Initial Catalog=PBP;Integrated Security=True";
+        private readonly string connStr = "Server=localhost;Database=db_pbp;User ID=root;Password=;";
 
         public FormAnggota()
         {
@@ -17,7 +16,6 @@ namespace PBP
 
         private void FormAnggota_Load(object sender, EventArgs e)
         {
-            // Panggil LoadData() saat form pertama kali dibuka
             LoadData();
         }
 
@@ -25,11 +23,9 @@ namespace PBP
         {
             try
             {
-                // Gunakan 'using' untuk memastikan koneksi ditutup otomatis
-                using (SqlConnection conn = new SqlConnection(connStr))
+                using (MySqlConnection conn = new MySqlConnection(connStr))
                 {
-                    conn.Open();
-                    SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM Anggota ORDER BY nama ASC", conn);
+                    MySqlDataAdapter da = new MySqlDataAdapter("SELECT id_anggota, nama, alamat, email, no_telepon FROM Anggota ORDER BY nama ASC", conn);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
                     dataGridView1.DataSource = dt;
@@ -48,83 +44,41 @@ namespace PBP
             txtAlamat.Clear();
             txtEmail.Clear();
             txtTelepon.Clear();
-            txtID.Focus();
+            txtPasswordBaru.Clear();
+            txtNama.Focus();
         }
 
         private void btnSimpan_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtID.Text) || string.IsNullOrWhiteSpace(txtNama.Text))
+            if (string.IsNullOrWhiteSpace(txtNama.Text) || string.IsNullOrWhiteSpace(txtPasswordBaru.Text))
             {
-                MessageBox.Show("ID dan Nama Anggota wajib diisi.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Nama Anggota dan Password Awal wajib diisi.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             try
             {
-                using (SqlConnection conn = new SqlConnection(connStr))
+                using (MySqlConnection conn = new MySqlConnection(connStr))
                 {
                     conn.Open();
-                    string query = "INSERT INTO Anggota (id_anggota, nama, alamat, email, no_telepon) VALUES (@id, @nama, @alamat, @email, @telp)";
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    using (MySqlCommand cmd = new MySqlCommand("Admin_InsertAnggota", conn))
                     {
-                        cmd.Parameters.AddWithValue("@id", txtID.Text);
-                        cmd.Parameters.AddWithValue("@nama", txtNama.Text);
-                        cmd.Parameters.AddWithValue("@alamat", txtAlamat.Text);
-                        cmd.Parameters.AddWithValue("@email", txtEmail.Text);
-                        cmd.Parameters.AddWithValue("@telp", txtTelepon.Text);
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("p_nama", txtNama.Text);
+                        cmd.Parameters.AddWithValue("p_alamat", txtAlamat.Text);
+                        cmd.Parameters.AddWithValue("p_email", txtEmail.Text);
+                        cmd.Parameters.AddWithValue("p_telp", txtTelepon.Text);
+                        cmd.Parameters.AddWithValue("p_password", txtPasswordBaru.Text);
                         cmd.ExecuteNonQuery();
                     }
                 }
-                MessageBox.Show("Data anggota berhasil disimpan.", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LoadData(); // Muat ulang data untuk menampilkan data baru
-                ClearFields(); // Bersihkan textbox
+                MessageBox.Show("Data anggota baru berhasil disimpan.", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoadData();
+                ClearFields();
             }
-            catch (SqlException ex)
+            catch (Exception ex)
             {
-                // Menangani error jika ID sudah ada (Primary Key violation)
-                if (ex.Number == 2627)
-                {
-                    MessageBox.Show($"Gagal menyimpan: ID Anggota '{txtID.Text}' sudah ada.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                else
-                {
-                    MessageBox.Show($"Gagal menyimpan data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
-
-        private void btnHapus_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(txtID.Text))
-            {
-                MessageBox.Show("Pilih data yang akan dihapus dengan mengklik baris pada tabel.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            // Tampilkan dialog konfirmasi sebelum menghapus
-            var confirmResult = MessageBox.Show("Apakah Anda yakin ingin menghapus data ini?", "Konfirmasi Hapus", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (confirmResult == DialogResult.Yes)
-            {
-                try
-                {
-                    using (SqlConnection conn = new SqlConnection(connStr))
-                    {
-                        conn.Open();
-                        string query = "DELETE FROM Anggota WHERE id_anggota=@id";
-                        using (SqlCommand cmd = new SqlCommand(query, conn))
-                        {
-                            cmd.Parameters.AddWithValue("@id", txtID.Text);
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
-                    MessageBox.Show("Data anggota berhasil dihapus.", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    LoadData();
-                    ClearFields();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Gagal menghapus data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                MessageBox.Show($"Gagal menyimpan data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -132,23 +86,22 @@ namespace PBP
         {
             if (string.IsNullOrWhiteSpace(txtID.Text))
             {
-                MessageBox.Show("Pilih data yang akan diupdate dengan mengklik baris pada tabel.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Pilih data yang akan diupdate dari tabel.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
             try
             {
-                using (SqlConnection conn = new SqlConnection(connStr))
+                using (MySqlConnection conn = new MySqlConnection(connStr))
                 {
                     conn.Open();
-                    string query = "UPDATE Anggota SET nama=@nama, alamat=@alamat, email=@email, no_telepon=@telp WHERE id_anggota=@id";
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    using (MySqlCommand cmd = new MySqlCommand("Admin_UpdateAnggota", conn))
                     {
-                        cmd.Parameters.AddWithValue("@id", txtID.Text);
-                        cmd.Parameters.AddWithValue("@nama", txtNama.Text);
-                        cmd.Parameters.AddWithValue("@alamat", txtAlamat.Text);
-                        cmd.Parameters.AddWithValue("@email", txtEmail.Text);
-                        cmd.Parameters.AddWithValue("@telp", txtTelepon.Text);
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("p_id", txtID.Text);
+                        cmd.Parameters.AddWithValue("p_nama", txtNama.Text);
+                        cmd.Parameters.AddWithValue("p_alamat", txtAlamat.Text);
+                        cmd.Parameters.AddWithValue("p_email", txtEmail.Text);
+                        cmd.Parameters.AddWithValue("p_telp", txtTelepon.Text);
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -162,20 +115,101 @@ namespace PBP
             }
         }
 
-        // Event handler saat sel di grid diklik
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Pastikan yang diklik adalah baris yang valid (bukan header)
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = this.dataGridView1.Rows[e.RowIndex];
-
-                // Ambil data dari sel dan tampilkan di textbox
                 txtID.Text = row.Cells["id_anggota"].Value.ToString();
                 txtNama.Text = row.Cells["nama"].Value.ToString();
                 txtAlamat.Text = row.Cells["alamat"].Value.ToString();
                 txtEmail.Text = row.Cells["email"].Value.ToString();
                 txtTelepon.Text = row.Cells["no_telepon"].Value.ToString();
+                txtPasswordBaru.Clear();
+            }
+        }
+
+        private void btnResetPassword_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtID.Text))
+            {
+                MessageBox.Show("Pilih anggota yang passwordnya akan di-reset dari tabel.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(txtPasswordBaru.Text))
+            {
+                MessageBox.Show("Isi password baru di field 'Reset Password'.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var confirmResult = MessageBox.Show($"Anda yakin ingin mereset password untuk anggota '{txtNama.Text}'?", "Konfirmasi Reset Password", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (confirmResult == DialogResult.Yes)
+            {
+                try
+                {
+                    using (MySqlConnection conn = new MySqlConnection(connStr))
+                    {
+                        conn.Open();
+                        using (MySqlCommand cmd = new MySqlCommand("Admin_ResetPasswordAnggota", conn))
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("p_newPass", txtPasswordBaru.Text);
+                            cmd.Parameters.AddWithValue("p_id", txtID.Text);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                    MessageBox.Show("Password berhasil di-reset.", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    ClearFields();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Gagal mereset password: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void btnHapus_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtID.Text))
+            {
+                MessageBox.Show("Pilih data yang akan dihapus dengan mengklik baris pada tabel.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var confirmResult = MessageBox.Show("Apakah Anda yakin ingin menghapus data ini?", "Konfirmasi Hapus", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (confirmResult == DialogResult.Yes)
+            {
+                try
+                {
+                    using (MySqlConnection conn = new MySqlConnection(connStr))
+                    {
+                        conn.Open();
+                        using (MySqlCommand cmd = new MySqlCommand("Admin_DeleteAnggota", conn))
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("p_id", txtID.Text);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                    MessageBox.Show("Data anggota berhasil dihapus.", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LoadData();
+                    ClearFields();
+                }
+                catch (MySqlException ex)
+                {
+                    if (ex.Number == 1451)
+                    {
+                        MessageBox.Show("Gagal menghapus: Anggota ini masih memiliki riwayat peminjaman aktif dan tidak bisa dihapus.", "Error Integritas Data", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Gagal menghapus data: {ex.Message}", "Error Database", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Terjadi kesalahan umum: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
     }

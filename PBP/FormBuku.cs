@@ -1,13 +1,13 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Data;
-using System.Data.SqlClient;
 using System.Windows.Forms;
 
 namespace PBP
 {
     public partial class FormBuku : Form
     {
-        private readonly string connStr = "Data Source =DESKTOP-A3U4VR2\\SQLEXPRESS; Initial Catalog = PBP;Integrated Security=True";
+        private readonly string connStr = "Server=localhost;Database=db_pbp;User ID=root;Password=;";
 
         public FormBuku()
         {
@@ -23,15 +23,13 @@ namespace PBP
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(connStr))
+                using (MySqlConnection conn = new MySqlConnection(connStr))
                 {
-                    SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM Buku ORDER BY judul ASC", conn);
+                    MySqlDataAdapter da = new MySqlDataAdapter("SELECT * FROM Buku ORDER BY judul ASC", conn);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
                     dataGridViewBuku.DataSource = dt;
 
-                    // [BARU] Sembunyikan kolom 'status' dari tampilan DataGridView
-                    // Data status tetap ada di belakang layar, tapi tidak terlihat oleh admin.
                     if (dataGridViewBuku.Columns["status"] != null)
                     {
                         dataGridViewBuku.Columns["status"].Visible = false;
@@ -52,7 +50,6 @@ namespace PBP
             txtPenerbit.Clear();
             txtTahun.Clear();
             txtKategori.Clear();
-            // [DIHAPUS] Referensi ke cmbStatus dihapus
             txtIdBuku.Focus();
         }
 
@@ -66,20 +63,18 @@ namespace PBP
 
             try
             {
-                using (SqlConnection conn = new SqlConnection(connStr))
+                using (MySqlConnection conn = new MySqlConnection(connStr))
                 {
                     conn.Open();
-                    // [DIUBAH] Status di-hardcode menjadi 'Tersedia' saat buku baru ditambahkan
-                    string query = "INSERT INTO Buku (id_buku, judul, pengarang, penerbit, tahun_terbit, kategori, status) VALUES (@id, @judul, @pengarang, @penerbit, @tahun, @kategori, 'Tersedia')";
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    using (MySqlCommand cmd = new MySqlCommand("InsertBuku", conn))
                     {
-                        cmd.Parameters.AddWithValue("@id", txtIdBuku.Text);
-                        cmd.Parameters.AddWithValue("@judul", txtJudul.Text);
-                        cmd.Parameters.AddWithValue("@pengarang", txtPengarang.Text);
-                        cmd.Parameters.AddWithValue("@penerbit", txtPenerbit.Text);
-                        cmd.Parameters.AddWithValue("@tahun", txtTahun.Text);
-                        cmd.Parameters.AddWithValue("@kategori", txtKategori.Text);
-                        // [DIHAPUS] Parameter untuk status tidak lagi diperlukan
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("p_id_buku", txtIdBuku.Text);
+                        cmd.Parameters.AddWithValue("p_judul", txtJudul.Text);
+                        cmd.Parameters.AddWithValue("p_pengarang", txtPengarang.Text);
+                        cmd.Parameters.AddWithValue("p_penerbit", txtPenerbit.Text);
+                        cmd.Parameters.AddWithValue("p_tahun", txtTahun.Text);
+                        cmd.Parameters.AddWithValue("p_kategori", txtKategori.Text);
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -87,11 +82,11 @@ namespace PBP
                 LoadDataBuku();
                 ClearFields();
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                if (ex.Number == 2627)
+                if (ex.Number == 1062)
                 {
-                    MessageBox.Show($"Gagal menyimpan: ID Buku '{txtIdBuku.Text}' sudah ada.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Gagal menyimpan: ID Buku '{txtIdBuku.Text}' sudah ada.", "Error Duplikat", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                 {
@@ -110,20 +105,18 @@ namespace PBP
 
             try
             {
-                using (SqlConnection conn = new SqlConnection(connStr))
+                using (MySqlConnection conn = new MySqlConnection(connStr))
                 {
                     conn.Open();
-                    // [DIUBAH] Kolom status dihapus dari perintah UPDATE. Admin tidak bisa mengubah status.
-                    string query = "UPDATE Buku SET judul=@judul, pengarang=@pengarang, penerbit=@penerbit, tahun_terbit=@tahun, kategori=@kategori WHERE id_buku=@id";
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    using (MySqlCommand cmd = new MySqlCommand("UpdateBuku", conn))
                     {
-                        cmd.Parameters.AddWithValue("@id", txtIdBuku.Text);
-                        cmd.Parameters.AddWithValue("@judul", txtJudul.Text);
-                        cmd.Parameters.AddWithValue("@pengarang", txtPengarang.Text);
-                        cmd.Parameters.AddWithValue("@penerbit", txtPenerbit.Text);
-                        cmd.Parameters.AddWithValue("@tahun", txtTahun.Text);
-                        cmd.Parameters.AddWithValue("@kategori", txtKategori.Text);
-                        // [DIHAPUS] Parameter untuk status tidak lagi diperlukan
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("p_id_buku", txtIdBuku.Text);
+                        cmd.Parameters.AddWithValue("p_judul", txtJudul.Text);
+                        cmd.Parameters.AddWithValue("p_pengarang", txtPengarang.Text);
+                        cmd.Parameters.AddWithValue("p_penerbit", txtPenerbit.Text);
+                        cmd.Parameters.AddWithValue("p_tahun", txtTahun.Text);
+                        cmd.Parameters.AddWithValue("p_kategori", txtKategori.Text);
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -136,7 +129,6 @@ namespace PBP
                 MessageBox.Show($"Gagal mengupdate data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         private void btnHapus_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtIdBuku.Text))
@@ -150,11 +142,11 @@ namespace PBP
             {
                 try
                 {
-                    using (SqlConnection conn = new SqlConnection(connStr))
+                    using (MySqlConnection conn = new MySqlConnection(connStr))
                     {
                         conn.Open();
                         string query = "DELETE FROM Buku WHERE id_buku=@id";
-                        using (SqlCommand cmd = new SqlCommand(query, conn))
+                        using (MySqlCommand cmd = new MySqlCommand(query, conn))
                         {
                             cmd.Parameters.AddWithValue("@id", txtIdBuku.Text);
                             cmd.ExecuteNonQuery();
@@ -164,10 +156,9 @@ namespace PBP
                     LoadDataBuku();
                     ClearFields();
                 }
-                catch (SqlException ex)
+                catch (MySqlException ex)
                 {
-                    // Menangani error jika buku tidak bisa dihapus karena sedang dipinjam (Foreign Key constraint)
-                    if (ex.Number == 547)
+                    if (ex.Number == 1451)
                     {
                         MessageBox.Show("Gagal menghapus: Buku ini sedang dalam proses peminjaman dan tidak bisa dihapus.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
@@ -193,7 +184,6 @@ namespace PBP
                     txtPenerbit.Text = row.Cells["penerbit"].Value.ToString();
                     txtTahun.Text = row.Cells["tahun_terbit"].Value.ToString();
                     txtKategori.Text = row.Cells["kategori"].Value.ToString();
-                    // [DIHAPUS] Baris untuk mengisi cmbStatus dihapus
                 }
                 catch (Exception ex)
                 {
