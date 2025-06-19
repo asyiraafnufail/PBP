@@ -32,6 +32,7 @@
             this.btnBuku = new System.Windows.Forms.Button();
             this.btnPeminjaman = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.btnLogout = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnAnggota
@@ -58,7 +59,7 @@
             // 
             // btnPeminjaman
             // 
-            this.btnPeminjaman.Location = new System.Drawing.Point(259, 228);
+            this.btnPeminjaman.Location = new System.Drawing.Point(158, 228);
             this.btnPeminjaman.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnPeminjaman.Name = "btnPeminjaman";
             this.btnPeminjaman.Size = new System.Drawing.Size(189, 62);
@@ -77,12 +78,24 @@
             this.label1.TabIndex = 4;
             this.label1.Text = "Silahkan pilih menu";
             // 
+            // btnLogout
+            // 
+            this.btnLogout.Location = new System.Drawing.Point(355, 228);
+            this.btnLogout.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnLogout.Name = "btnLogout";
+            this.btnLogout.Size = new System.Drawing.Size(189, 62);
+            this.btnLogout.TabIndex = 5;
+            this.btnLogout.Text = "Kembali ke login";
+            this.btnLogout.UseVisualStyleBackColor = true;
+            this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
+            // 
             // FormMenuAdmin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Olive;
             this.ClientSize = new System.Drawing.Size(691, 410);
+            this.Controls.Add(this.btnLogout);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnPeminjaman);
             this.Controls.Add(this.btnBuku);
@@ -102,6 +115,7 @@
         private System.Windows.Forms.Button btnBuku;
         private System.Windows.Forms.Button btnPeminjaman;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnLogout;
     }
 }
 

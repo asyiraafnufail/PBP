@@ -12,6 +12,8 @@ namespace PBP
 {
     public partial class FormMenuAdmin: Form
     {
+        private bool isLoggingOut = false;
+
         public FormMenuAdmin()
         {
             InitializeComponent();
@@ -38,6 +40,42 @@ namespace PBP
         {
             FormPeminjaman formPeminjaman = new FormPeminjaman();
             formPeminjaman.Show();
+        }
+
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            this.isLoggingOut = true;
+
+            Form loginForm = Application.OpenForms["FormLogin"];
+
+            if (loginForm != null)
+            {
+                loginForm.Show();
+            }
+            else
+            {
+                FormLogin newLogin = new FormLogin();
+                newLogin.Show();
+            }
+
+            this.Close();
+        }
+
+        private void FormAdmin_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing && !this.isLoggingOut)
+            {
+                DialogResult result = MessageBox.Show("Apakah Anda yakin ingin keluar dari aplikasi?", "Konfirmasi Keluar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (result == DialogResult.No)
+                {
+                    e.Cancel = true;
+                }
+                else
+                {
+                    Application.Exit();
+                }
+            }
         }
     }
 }
