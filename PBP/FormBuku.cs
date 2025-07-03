@@ -1,13 +1,14 @@
-﻿using MySql.Data.MySqlClient;
-using System;
+﻿using System;
 using System.Data;
+using System.Data.SqlClient;
 using System.Windows.Forms;
+using System.Configuration;
 
 namespace PBP
 {
     public partial class FormBuku : Form
     {
-        private readonly string connStr = "Server=localhost;Database=db_pbp;User ID=root;Password=;";
+        private readonly string connStr = ConfigurationManager.ConnectionStrings["PBP.Properties.Settings.PBPConnectionString"].ConnectionString;
 
         public FormBuku()
         {
@@ -23,9 +24,9 @@ namespace PBP
         {
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(connStr))
+                using (SqlConnection conn = new SqlConnection(connStr))
                 {
-                    MySqlDataAdapter da = new MySqlDataAdapter("SELECT * FROM Buku ORDER BY judul ASC", conn);
+                    SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM Buku ORDER BY judul ASC", conn);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
                     dataGridViewBuku.DataSource = dt;
@@ -55,43 +56,41 @@ namespace PBP
 
         private void btnSimpan_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtIdBuku.Text) || string.IsNullOrWhiteSpace(txtJudul.Text))
+            // Validasi diubah, tidak lagi memeriksa ID Buku
+            if (string.IsNullOrWhiteSpace(txtJudul.Text))
             {
-                MessageBox.Show("ID Buku dan Judul wajib diisi.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Judul wajib diisi.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(connStr))
+                using (SqlConnection conn = new SqlConnection(connStr))
                 {
                     conn.Open();
-                    using (MySqlCommand cmd = new MySqlCommand("InsertBuku", conn))
+                    using (SqlCommand cmd = new SqlCommand("InsertBuku", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("p_id_buku", txtIdBuku.Text);
-                        cmd.Parameters.AddWithValue("p_judul", txtJudul.Text);
-                        cmd.Parameters.AddWithValue("p_pengarang", txtPengarang.Text);
-                        cmd.Parameters.AddWithValue("p_penerbit", txtPenerbit.Text);
-                        cmd.Parameters.AddWithValue("p_tahun", txtTahun.Text);
-                        cmd.Parameters.AddWithValue("p_kategori", txtKategori.Text);
+                        cmd.Parameters.AddWithValue("@p_judul", txtJudul.Text);
+                        cmd.Parameters.AddWithValue("@p_pengarang", txtPengarang.Text);
+                        cmd.Parameters.AddWithValue("@p_penerbit", txtPenerbit.Text);
+                        cmd.Parameters.AddWithValue("@p_tahun", Convert.ToInt32(txtTahun.Text));
+                        cmd.Parameters.AddWithValue("@p_kategori", txtKategori.Text);
+
                         cmd.ExecuteNonQuery();
                     }
                 }
-                MessageBox.Show("Data buku baru berhasil disimpan dengan status 'Tersedia'.", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Data buku baru berhasil disimpan.", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadDataBuku();
                 ClearFields();
             }
-            catch (MySqlException ex)
+            catch (FormatException)
             {
-                if (ex.Number == 1062)
-                {
-                    MessageBox.Show($"Gagal menyimpan: ID Buku '{txtIdBuku.Text}' sudah ada.", "Error Duplikat", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                else
-                {
-                    MessageBox.Show($"Gagal menyimpan data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                MessageBox.Show("Format Tahun tidak valid. Harap masukkan angka.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Gagal menyimpan data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -105,18 +104,18 @@ namespace PBP
 
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(connStr))
+                using (SqlConnection conn = new SqlConnection(connStr))
                 {
                     conn.Open();
-                    using (MySqlCommand cmd = new MySqlCommand("UpdateBuku", conn))
+                    using (SqlCommand cmd = new SqlCommand("UpdateBuku", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("p_id_buku", txtIdBuku.Text);
-                        cmd.Parameters.AddWithValue("p_judul", txtJudul.Text);
-                        cmd.Parameters.AddWithValue("p_pengarang", txtPengarang.Text);
-                        cmd.Parameters.AddWithValue("p_penerbit", txtPenerbit.Text);
-                        cmd.Parameters.AddWithValue("p_tahun", txtTahun.Text);
-                        cmd.Parameters.AddWithValue("p_kategori", txtKategori.Text);
+                        cmd.Parameters.AddWithValue("@p_id_buku", txtIdBuku.Text);
+                        cmd.Parameters.AddWithValue("@p_judul", txtJudul.Text);
+                        cmd.Parameters.AddWithValue("@p_pengarang", txtPengarang.Text);
+                        cmd.Parameters.AddWithValue("@p_penerbit", txtPenerbit.Text);
+                        cmd.Parameters.AddWithValue("@p_tahun", txtTahun.Text);
+                        cmd.Parameters.AddWithValue("@p_kategori", txtKategori.Text);
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -142,11 +141,11 @@ namespace PBP
             {
                 try
                 {
-                    using (MySqlConnection conn = new MySqlConnection(connStr))
+                    using (SqlConnection conn = new SqlConnection(connStr))
                     {
                         conn.Open();
                         string query = "DELETE FROM Buku WHERE id_buku=@id";
-                        using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                        using (SqlCommand cmd = new SqlCommand(query, conn))
                         {
                             cmd.Parameters.AddWithValue("@id", txtIdBuku.Text);
                             cmd.ExecuteNonQuery();
@@ -156,9 +155,9 @@ namespace PBP
                     LoadDataBuku();
                     ClearFields();
                 }
-                catch (MySqlException ex)
+                catch (SqlException ex)
                 {
-                    if (ex.Number == 1451)
+                    if (ex.Number == 547)
                     {
                         MessageBox.Show("Gagal menghapus: Buku ini sedang dalam proses peminjaman dan tidak bisa dihapus.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }

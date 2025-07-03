@@ -1,13 +1,14 @@
-﻿using MySql.Data.MySqlClient;
-using System;
+﻿using System;
 using System.Data;
+using System.Data.SqlClient;
 using System.Windows.Forms;
+using System.Configuration;
 
 namespace PBP
 {
     public partial class FormLogin : Form
     {
-        private readonly string connStr = "Server=localhost;Database=db_pbp;User ID=root;Password=;";
+        private readonly string connStr = ConfigurationManager.ConnectionStrings["PBP.Properties.Settings.PBPConnectionString"].ConnectionString;
 
         public FormLogin()
         {
@@ -30,24 +31,24 @@ namespace PBP
 
             string email = txtUsername.Text.Trim();
             string plainPassword = txtPassword.Text;
+            bool loginSuccess = false;
 
-            using (MySqlConnection conn = new MySqlConnection(connStr))
+            using (SqlConnection conn = new SqlConnection(connStr))
             {
                 try
                 {
                     conn.Open();
 
-                    // Coba login sebagai Admin
-                    using (MySqlCommand cmdAdmin = new MySqlCommand("VerifyAdminLogin", conn))
+                    string adminQuery = "SELECT password, nama_admin FROM Admin WHERE email = @email";
+                    using (SqlCommand cmdAdmin = new SqlCommand(adminQuery, conn))
                     {
-                        cmdAdmin.CommandType = CommandType.StoredProcedure;
-                        cmdAdmin.Parameters.AddWithValue("p_email", email);
-                        using (MySqlDataReader reader = cmdAdmin.ExecuteReader())
+                        cmdAdmin.CommandType = CommandType.Text;
+                        cmdAdmin.Parameters.AddWithValue("@email", email);
+                        using (SqlDataReader reader = cmdAdmin.ExecuteReader())
                         {
                             if (reader.Read())
                             {
                                 string storedPassword = reader["password"].ToString();
-                                // Perbandingan teks biasa
                                 if (plainPassword == storedPassword)
                                 {
                                     string userNama = reader["nama_admin"].ToString();
@@ -56,23 +57,24 @@ namespace PBP
                                     FormMenuAdmin menu = new FormMenuAdmin();
                                     menu.Show();
                                     this.Hide();
-                                    return;
+                                    loginSuccess = true;
                                 }
                             }
                         }
                     }
 
-                    // Coba sebagai Anggota
-                    using (MySqlCommand cmdAnggota = new MySqlCommand("VerifyAnggotaLogin", conn))
+                    if (loginSuccess) return;
+
+                    string anggotaQuery = "SELECT id_anggota, nama, password FROM Anggota WHERE email = @email";
+                    using (SqlCommand cmdAnggota = new SqlCommand(anggotaQuery, conn))
                     {
-                        cmdAnggota.CommandType = CommandType.StoredProcedure;
-                        cmdAnggota.Parameters.AddWithValue("p_email", email);
-                        using (MySqlDataReader reader = cmdAnggota.ExecuteReader())
+                        cmdAnggota.CommandType = CommandType.Text;
+                        cmdAnggota.Parameters.AddWithValue("@email", email);
+                        using (SqlDataReader reader = cmdAnggota.ExecuteReader())
                         {
                             if (reader.Read())
                             {
                                 string storedPassword = reader["password"].ToString();
-                                // Perbandingan teks biasa
                                 if (plainPassword == storedPassword)
                                 {
                                     int userId = Convert.ToInt32(reader["id_anggota"]);
@@ -82,24 +84,22 @@ namespace PBP
                                     DashboardUser dash = new DashboardUser(userId);
                                     dash.Show();
                                     this.Hide();
-                                    return;
+                                    loginSuccess = true;
                                 }
                             }
                         }
                     }
 
-                    MessageBox.Show("Username atau Password salah!", "Login Gagal", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    if (!loginSuccess)
+                    {
+                        MessageBox.Show("Username atau Password salah!", "Login Gagal", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Terjadi kesalahan: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

@@ -87,7 +87,7 @@
             this.btnPinjam.TabIndex = 4;
             this.btnPinjam.Text = "Pinjam";
             this.btnPinjam.UseVisualStyleBackColor = true;
-            this.btnPinjam.Click += new System.EventHandler(this.button1_Click);
+            this.btnPinjam.Click += new System.EventHandler(this.btnPinjam_Click);
             // 
             // panelBuku
             // 

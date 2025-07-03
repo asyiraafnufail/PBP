@@ -33,6 +33,7 @@
             this.btnPeminjaman = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.btnLogout = new System.Windows.Forms.Button();
+            this.btnLaporan = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnAnggota
@@ -89,12 +90,23 @@
             this.btnLogout.UseVisualStyleBackColor = true;
             this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
             // 
+            // btnLaporan
+            // 
+            this.btnLaporan.Location = new System.Drawing.Point(158, 300);
+            this.btnLaporan.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnLaporan.Name = "btnLaporan";
+            this.btnLaporan.Size = new System.Drawing.Size(189, 62);
+            this.btnLaporan.TabIndex = 6;
+            this.btnLaporan.Text = "Chart";
+            this.btnLaporan.UseVisualStyleBackColor = true;
+            // 
             // FormMenuAdmin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Olive;
-            this.ClientSize = new System.Drawing.Size(691, 410);
+            this.ClientSize = new System.Drawing.Size(691, 462);
+            this.Controls.Add(this.btnLaporan);
             this.Controls.Add(this.btnLogout);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnPeminjaman);
@@ -116,6 +128,7 @@
         private System.Windows.Forms.Button btnPeminjaman;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnLogout;
+        private System.Windows.Forms.Button btnLaporan;
     }
 }
 

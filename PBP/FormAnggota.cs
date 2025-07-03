@@ -1,13 +1,14 @@
-﻿using MySql.Data.MySqlClient;
-using System;
+﻿using System;
 using System.Data;
+using System.Data.SqlClient;
 using System.Windows.Forms;
+using System.Configuration;
 
 namespace PBP
 {
     public partial class FormAnggota : Form
     {
-        private readonly string connStr = "Server=localhost;Database=db_pbp;User ID=root;Password=;";
+        private readonly string connStr = ConfigurationManager.ConnectionStrings["PBP.Properties.Settings.PBPConnectionString"].ConnectionString;
 
         public FormAnggota()
         {
@@ -23,9 +24,9 @@ namespace PBP
         {
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(connStr))
+                using (SqlConnection conn = new SqlConnection(connStr))
                 {
-                    MySqlDataAdapter da = new MySqlDataAdapter("SELECT id_anggota, nama, alamat, email, no_telepon FROM Anggota ORDER BY nama ASC", conn);
+                    SqlDataAdapter da = new SqlDataAdapter("SELECT id_anggota, nama, alamat, email, no_telepon FROM Anggota ORDER BY nama ASC", conn);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
                     dataGridView1.DataSource = dt;
@@ -58,17 +59,17 @@ namespace PBP
 
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(connStr))
+                using (SqlConnection conn = new SqlConnection(connStr))
                 {
                     conn.Open();
-                    using (MySqlCommand cmd = new MySqlCommand("Admin_InsertAnggota", conn))
+                    using (SqlCommand cmd = new SqlCommand("Admin_InsertAnggota", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("p_nama", txtNama.Text);
-                        cmd.Parameters.AddWithValue("p_alamat", txtAlamat.Text);
-                        cmd.Parameters.AddWithValue("p_email", txtEmail.Text);
-                        cmd.Parameters.AddWithValue("p_telp", txtTelepon.Text);
-                        cmd.Parameters.AddWithValue("p_password", txtPasswordBaru.Text);
+                        cmd.Parameters.AddWithValue("@p_nama", txtNama.Text);
+                        cmd.Parameters.AddWithValue("@p_alamat", txtAlamat.Text);
+                        cmd.Parameters.AddWithValue("@p_email", txtEmail.Text);
+                        cmd.Parameters.AddWithValue("@p_telp", txtTelepon.Text);
+                        cmd.Parameters.AddWithValue("@p_password", txtPasswordBaru.Text);
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -91,17 +92,17 @@ namespace PBP
             }
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(connStr))
+                using (SqlConnection conn = new SqlConnection(connStr))
                 {
                     conn.Open();
-                    using (MySqlCommand cmd = new MySqlCommand("Admin_UpdateAnggota", conn))
+                    using (SqlCommand cmd = new SqlCommand("Admin_UpdateAnggota", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("p_id", txtID.Text);
-                        cmd.Parameters.AddWithValue("p_nama", txtNama.Text);
-                        cmd.Parameters.AddWithValue("p_alamat", txtAlamat.Text);
-                        cmd.Parameters.AddWithValue("p_email", txtEmail.Text);
-                        cmd.Parameters.AddWithValue("p_telp", txtTelepon.Text);
+                        cmd.Parameters.AddWithValue("@p_id", txtID.Text);
+                        cmd.Parameters.AddWithValue("@p_nama", txtNama.Text);
+                        cmd.Parameters.AddWithValue("@p_alamat", txtAlamat.Text);
+                        cmd.Parameters.AddWithValue("@p_email", txtEmail.Text);
+                        cmd.Parameters.AddWithValue("@p_telp", txtTelepon.Text);
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -147,14 +148,14 @@ namespace PBP
             {
                 try
                 {
-                    using (MySqlConnection conn = new MySqlConnection(connStr))
+                    using (SqlConnection conn = new SqlConnection(connStr))
                     {
                         conn.Open();
-                        using (MySqlCommand cmd = new MySqlCommand("Admin_ResetPasswordAnggota", conn))
+                        using (SqlCommand cmd = new SqlCommand("Admin_ResetPasswordAnggota", conn))
                         {
                             cmd.CommandType = CommandType.StoredProcedure;
-                            cmd.Parameters.AddWithValue("p_newPass", txtPasswordBaru.Text);
-                            cmd.Parameters.AddWithValue("p_id", txtID.Text);
+                            cmd.Parameters.AddWithValue("@p_newPass", txtPasswordBaru.Text);
+                            cmd.Parameters.AddWithValue("@p_id", txtID.Text);
                             cmd.ExecuteNonQuery();
                         }
                     }
@@ -181,13 +182,13 @@ namespace PBP
             {
                 try
                 {
-                    using (MySqlConnection conn = new MySqlConnection(connStr))
+                    using (SqlConnection conn = new SqlConnection(connStr))
                     {
                         conn.Open();
-                        using (MySqlCommand cmd = new MySqlCommand("Admin_DeleteAnggota", conn))
+                        using (SqlCommand cmd = new SqlCommand("Admin_DeleteAnggota", conn))
                         {
                             cmd.CommandType = CommandType.StoredProcedure;
-                            cmd.Parameters.AddWithValue("p_id", txtID.Text);
+                            cmd.Parameters.AddWithValue("@p_id", txtID.Text);
                             cmd.ExecuteNonQuery();
                         }
                     }
@@ -195,9 +196,9 @@ namespace PBP
                     LoadData();
                     ClearFields();
                 }
-                catch (MySqlException ex)
+                catch (SqlException ex)
                 {
-                    if (ex.Number == 1451)
+                    if (ex.Number == 547)
                     {
                         MessageBox.Show("Gagal menghapus: Anggota ini masih memiliki riwayat peminjaman aktif dan tidak bisa dihapus.", "Error Integritas Data", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
