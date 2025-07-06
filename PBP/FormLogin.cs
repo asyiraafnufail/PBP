@@ -6,14 +6,36 @@ using System.Configuration;
 
 namespace PBP
 {
-    public partial class FormLogin : Form
+    public partial class btnTestConnection : Form
     {
         private readonly string connStr = ConfigurationManager.ConnectionStrings["PBP.Properties.Settings.PBPConnectionString"].ConnectionString;
+        private bool isConnectionTested = false;
 
-        public FormLogin()
+        public btnTestConnection()
         {
             InitializeComponent();
             txtPassword.UseSystemPasswordChar = true;
+        }
+
+        private void btnTestConnection_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    conn.Open(); // Coba buka koneksi
+                }
+                // Jika berhasil, tampilkan pesan sukses
+                MessageBox.Show("Koneksi ke database berhasil!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                isConnectionTested = true; // Set flag menjadi true
+            }
+            catch (Exception ex)
+            {
+                // Jika gagal, tampilkan pesan error
+                MessageBox.Show($"Koneksi ke database gagal.\n\nError: {ex.Message}",
+                                "Koneksi Gagal", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                isConnectionTested = false; // Set flag menjadi false
+            }
         }
 
         private void FormLogin_Load(object sender, EventArgs e)
@@ -23,6 +45,12 @@ namespace PBP
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
+            if (!isConnectionTested)
+            {
+                MessageBox.Show("Silakan uji koneksi ke database terlebih dahulu.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // Hentikan proses login jika koneksi belum diuji
+            }
+
             if (string.IsNullOrWhiteSpace(txtUsername.Text) || string.IsNullOrWhiteSpace(txtPassword.Text))
             {
                 MessageBox.Show("Username (email) dan password harus diisi.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);

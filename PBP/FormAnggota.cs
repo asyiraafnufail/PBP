@@ -57,6 +57,12 @@ namespace PBP
                 return;
             }
 
+            if (txtPasswordBaru.Text.Length < 8)
+            {
+                MessageBox.Show("Password harus terdiri dari minimal 8 karakter.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             try
             {
                 using (SqlConnection conn = new SqlConnection(connStr))
@@ -77,6 +83,17 @@ namespace PBP
                 LoadData();
                 ClearFields();
             }
+            catch (SqlException ex)
+            {
+                if (ex.Number == 2627 || ex.Number == 2601)
+                {
+                    MessageBox.Show("Gagal menyimpan: Email yang Anda masukkan sudah terdaftar. Silakan gunakan email lain.", "Error Duplikasi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    MessageBox.Show($"Gagal menyimpan data karena kesalahan database: {ex.Message}", "Error Database", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
             catch (Exception ex)
             {
                 MessageBox.Show($"Gagal menyimpan data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -90,6 +107,7 @@ namespace PBP
                 MessageBox.Show("Pilih data yang akan diupdate dari tabel.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
             try
             {
                 using (SqlConnection conn = new SqlConnection(connStr))
@@ -109,6 +127,17 @@ namespace PBP
                 MessageBox.Show("Data anggota berhasil diupdate.", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadData();
                 ClearFields();
+            }
+            catch (SqlException ex)
+            {
+                if (ex.Number == 2627 || ex.Number == 2601)
+                {
+                    MessageBox.Show("Gagal mengupdate: Email yang Anda masukkan sudah digunakan oleh anggota lain.", "Error Duplikasi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    MessageBox.Show($"Gagal mengupdate data karena kesalahan database: {ex.Message}", "Error Database", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             catch (Exception ex)
             {
@@ -139,7 +168,13 @@ namespace PBP
             }
             if (string.IsNullOrWhiteSpace(txtPasswordBaru.Text))
             {
-                MessageBox.Show("Isi password baru di field 'Reset Password'.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Isi password baru di field 'Password Baru'.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (txtPasswordBaru.Text.Length < 8)
+            {
+                MessageBox.Show("Password baru harus terdiri dari minimal 8 karakter.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 

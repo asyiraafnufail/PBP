@@ -55,7 +55,7 @@ namespace PBP
             }
             else
             {
-                FormLogin newLogin = new FormLogin();
+                btnTestConnection newLogin = new btnTestConnection();
                 newLogin.Show();
             }
 

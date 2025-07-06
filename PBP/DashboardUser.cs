@@ -130,9 +130,9 @@ namespace PBP
             {
                 DataTable dt = new DataTable();
                 string query = @"SELECT b.judul, b.pengarang, b.penerbit, b.tahun_terbit, 
-                                   b.kategori, b.status, p.tanggal_pinjam, p.tanggal_kembali
-                            FROM Peminjaman AS p
-                            INNER JOIN Buku AS b ON p.id_buku = b.id_buku";
+                               b.kategori, b.status, p.tanggal_pinjam, p.tanggal_kembali
+                        FROM Peminjaman AS p
+                        INNER JOIN Buku AS b ON p.id_buku = b.id_buku"; // <--- Query dioptimalkan oleh Indeks
                 using (SqlConnection conn = new SqlConnection(connStr))
                 {
                     SqlDataAdapter da = new SqlDataAdapter(query, conn);
@@ -220,7 +220,7 @@ namespace PBP
             }
             else
             {
-                FormLogin newLogin = new FormLogin();
+                btnTestConnection newLogin = new btnTestConnection();
                 newLogin.Show();
             }
             this.isLoggingOut = true;
