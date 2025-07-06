@@ -58,42 +58,7 @@ namespace PBP
 
         private void btnSimpan_Click(object sender, EventArgs e)
         {
-            // Validasi diubah, tidak lagi memeriksa ID Buku
-            if (string.IsNullOrWhiteSpace(txtJudul.Text))
-            {
-                MessageBox.Show("Judul wajib diisi.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
 
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connStr))
-                {
-                    conn.Open();
-                    using (SqlCommand cmd = new SqlCommand("InsertBuku", conn))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@p_judul", txtJudul.Text);
-                        cmd.Parameters.AddWithValue("@p_pengarang", txtPengarang.Text);
-                        cmd.Parameters.AddWithValue("@p_penerbit", txtPenerbit.Text);
-                        cmd.Parameters.AddWithValue("@p_tahun", Convert.ToInt32(txtTahun.Text));
-                        cmd.Parameters.AddWithValue("@p_kategori", txtKategori.Text);
-
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-                MessageBox.Show("Data buku baru berhasil disimpan.", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LoadDataBuku();
-                ClearFields();
-            }
-            catch (FormatException)
-            {
-                MessageBox.Show("Format Tahun tidak valid. Harap masukkan angka.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Gagal menyimpan data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)

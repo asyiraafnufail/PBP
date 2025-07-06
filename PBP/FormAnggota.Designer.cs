@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAnggota));
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -38,15 +39,20 @@
             this.txtAlamat = new System.Windows.Forms.TextBox();
             this.txtEmail = new System.Windows.Forms.TextBox();
             this.txtTelepon = new System.Windows.Forms.TextBox();
-            this.btnSimpan = new System.Windows.Forms.Button();
-            this.btnHapus = new System.Windows.Forms.Button();
-            this.btnUpdate = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label6 = new System.Windows.Forms.Label();
             this.txtPasswordBaru = new System.Windows.Forms.TextBox();
-            this.btnResetPassword = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictureBox5 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -140,39 +146,6 @@
             this.txtTelepon.Size = new System.Drawing.Size(463, 31);
             this.txtTelepon.TabIndex = 9;
             // 
-            // btnSimpan
-            // 
-            this.btnSimpan.Location = new System.Drawing.Point(945, 61);
-            this.btnSimpan.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btnSimpan.Name = "btnSimpan";
-            this.btnSimpan.Size = new System.Drawing.Size(165, 36);
-            this.btnSimpan.TabIndex = 10;
-            this.btnSimpan.Text = "Simpan";
-            this.btnSimpan.UseVisualStyleBackColor = true;
-            this.btnSimpan.Click += new System.EventHandler(this.btnSimpan_Click);
-            // 
-            // btnHapus
-            // 
-            this.btnHapus.Location = new System.Drawing.Point(945, 153);
-            this.btnHapus.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btnHapus.Name = "btnHapus";
-            this.btnHapus.Size = new System.Drawing.Size(165, 36);
-            this.btnHapus.TabIndex = 11;
-            this.btnHapus.Text = "Hapus";
-            this.btnHapus.UseVisualStyleBackColor = true;
-            this.btnHapus.Click += new System.EventHandler(this.btnHapus_Click);
-            // 
-            // btnUpdate
-            // 
-            this.btnUpdate.Location = new System.Drawing.Point(945, 107);
-            this.btnUpdate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btnUpdate.Name = "btnUpdate";
-            this.btnUpdate.Size = new System.Drawing.Size(165, 36);
-            this.btnUpdate.TabIndex = 12;
-            this.btnUpdate.Text = "Update";
-            this.btnUpdate.UseVisualStyleBackColor = true;
-            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
-            // 
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -203,27 +176,60 @@
             this.txtPasswordBaru.Size = new System.Drawing.Size(463, 31);
             this.txtPasswordBaru.TabIndex = 15;
             // 
-            // btnResetPassword
+            // pictureBox4
             // 
-            this.btnResetPassword.Location = new System.Drawing.Point(945, 266);
-            this.btnResetPassword.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btnResetPassword.Name = "btnResetPassword";
-            this.btnResetPassword.Size = new System.Drawing.Size(165, 36);
-            this.btnResetPassword.TabIndex = 16;
-            this.btnResetPassword.Text = "Reset Password";
-            this.btnResetPassword.UseVisualStyleBackColor = true;
-            this.btnResetPassword.Click += new System.EventHandler(this.btnResetPassword_Click);
+            this.pictureBox4.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox4.Image")));
+            this.pictureBox4.Location = new System.Drawing.Point(1095, 146);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(58, 60);
+            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox4.TabIndex = 24;
+            this.pictureBox4.TabStop = false;
+            this.pictureBox4.Click += new System.EventHandler(this.btnKembali_Click);
             // 
-            // button1
+            // pictureBox3
             // 
-            this.button1.Location = new System.Drawing.Point(945, 312);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(165, 36);
-            this.button1.TabIndex = 17;
-            this.button1.Text = "Kembali";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.btnKembali_Click);
+            this.pictureBox3.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox3.Image")));
+            this.pictureBox3.Location = new System.Drawing.Point(906, 193);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(58, 60);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox3.TabIndex = 23;
+            this.pictureBox3.TabStop = false;
+            this.pictureBox3.Click += new System.EventHandler(this.btnHapus_Click);
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBox2.Location = new System.Drawing.Point(906, 127);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(58, 60);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox2.TabIndex = 22;
+            this.pictureBox2.TabStop = false;
+            this.pictureBox2.Click += new System.EventHandler(this.btnUpdate_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(906, 61);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(58, 60);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 21;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.btnSimpan_Click);
+            // 
+            // pictureBox5
+            // 
+            this.pictureBox5.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox5.Image")));
+            this.pictureBox5.Location = new System.Drawing.Point(906, 259);
+            this.pictureBox5.Name = "pictureBox5";
+            this.pictureBox5.Size = new System.Drawing.Size(58, 60);
+            this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox5.TabIndex = 25;
+            this.pictureBox5.TabStop = false;
+            this.pictureBox5.Click += new System.EventHandler(this.btnResetPassword_Click);
             // 
             // FormAnggota
             // 
@@ -231,14 +237,14 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.ClientSize = new System.Drawing.Size(1200, 703);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.btnResetPassword);
+            this.Controls.Add(this.pictureBox5);
+            this.Controls.Add(this.pictureBox4);
+            this.Controls.Add(this.pictureBox3);
+            this.Controls.Add(this.pictureBox2);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.txtPasswordBaru);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.btnUpdate);
-            this.Controls.Add(this.btnHapus);
-            this.Controls.Add(this.btnSimpan);
             this.Controls.Add(this.txtTelepon);
             this.Controls.Add(this.txtEmail);
             this.Controls.Add(this.txtAlamat);
@@ -252,8 +258,14 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "FormAnggota";
             this.Text = "FormAnggota";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormAnggota_FormClosing);
             this.Load += new System.EventHandler(this.FormAnggota_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -271,13 +283,13 @@
         private System.Windows.Forms.TextBox txtAlamat;
         private System.Windows.Forms.TextBox txtEmail;
         private System.Windows.Forms.TextBox txtTelepon;
-        private System.Windows.Forms.Button btnSimpan;
-        private System.Windows.Forms.Button btnHapus;
-        private System.Windows.Forms.Button btnUpdate;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox txtPasswordBaru;
-        private System.Windows.Forms.Button btnResetPassword;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.PictureBox pictureBox4;
+        private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox pictureBox5;
     }
 }

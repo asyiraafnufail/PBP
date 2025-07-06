@@ -113,34 +113,50 @@ namespace PBP
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
+            // 1. Validasi Input
             if (string.IsNullOrWhiteSpace(txtIDPeminjaman.Text))
             {
-                MessageBox.Show("Pilih data peminjaman yang akan diupdate.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Pilih data peminjaman yang akan diupdate dari tabel.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
+            if (string.IsNullOrWhiteSpace(txtIDAnggota.Text) || string.IsNullOrWhiteSpace(txtIDBuku.Text))
+            {
+                MessageBox.Show("ID Anggota dan ID Buku tidak boleh kosong.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 2. Proses Update ke Database
             try
             {
                 using (SqlConnection conn = new SqlConnection(connStr))
                 {
                     conn.Open();
-                    string query = "UPDATE Peminjaman SET id_anggota=@idanggota, id_buku=@idbuku, tanggal_pinjam=@tglpinjam, tanggal_kembali=@tglkembali WHERE id_peminjaman=@id";
+                    // Query untuk mengupdate data peminjaman berdasarkan ID
+                    string query = "UPDATE Peminjaman SET id_anggota = @idanggota, id_buku = @idbuku, tanggal_pinjam = @tglpinjam, tanggal_kembali = @tglkembali WHERE id_peminjaman = @id";
+
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
+                        // Menambahkan parameter untuk keamanan (mencegah SQL Injection)
                         cmd.Parameters.AddWithValue("@id", txtIDPeminjaman.Text);
                         cmd.Parameters.AddWithValue("@idanggota", txtIDAnggota.Text);
                         cmd.Parameters.AddWithValue("@idbuku", txtIDBuku.Text);
                         cmd.Parameters.AddWithValue("@tglpinjam", dtpTanggalPinjam.Value);
                         cmd.Parameters.AddWithValue("@tglkembali", dtpTanggalKembali.Value);
+
+                        // Eksekusi query
                         cmd.ExecuteNonQuery();
                     }
                 }
+
+                // 3. Umpan Balik dan Refresh Tampilan
                 MessageBox.Show("Data peminjaman berhasil diupdate.", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                TampilData();
-                ClearFields();
+                TampilData(); // Memuat ulang data di DataGridView
+                ClearFields(); // Membersihkan input field
             }
             catch (Exception ex)
             {
+                // Menampilkan pesan jika terjadi error
                 MessageBox.Show($"Gagal mengupdate data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -230,26 +246,6 @@ namespace PBP
             }
         }
 
-        private void btnAnggota_Click(object sender, EventArgs e)
-        {
-            this.Hide(); 
-            FormAnggota formAnggota = new FormAnggota();
-            formAnggota.Show();
-        }
-
-        private void btnBuku_Click(object sender, EventArgs e)
-        {
-            this.Hide(); 
-            FormBuku formBuku = new FormBuku();
-            formBuku.Show();
-        }
-
-        private void btnPeminjaman_Click(object sender, EventArgs e)
-        {
-            this.Hide(); 
-            FormPeminjaman formPeminjaman = new FormPeminjaman();
-            formPeminjaman.Show();
-        }
         private void btnKembali_Click(object sender, EventArgs e)
         {
             FormMenuAdmin adminDashboard = Application.OpenForms.OfType<FormMenuAdmin>().FirstOrDefault();
