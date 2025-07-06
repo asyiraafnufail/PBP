@@ -44,6 +44,7 @@
             this.btnUpdate = new System.Windows.Forms.Button();
             this.btnHapus = new System.Windows.Forms.Button();
             this.dataGridViewBuku = new System.Windows.Forms.DataGridView();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewBuku)).BeginInit();
             this.SuspendLayout();
             // 
@@ -201,12 +202,24 @@
             this.dataGridViewBuku.TabIndex = 15;
             this.dataGridViewBuku.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewBuku_CellClick);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(855, 353);
+            this.button1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(153, 36);
+            this.button1.TabIndex = 16;
+            this.button1.Text = "Kembali";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.btnKembali_Click);
+            // 
             // FormBuku
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.ClientSize = new System.Drawing.Size(1200, 794);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.dataGridViewBuku);
             this.Controls.Add(this.btnHapus);
             this.Controls.Add(this.btnUpdate);
@@ -226,6 +239,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "FormBuku";
             this.Text = "FormBuku";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormBuku_FormClosing);
             this.Load += new System.EventHandler(this.FormBuku_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewBuku)).EndInit();
             this.ResumeLayout(false);
@@ -251,5 +265,6 @@
         private System.Windows.Forms.Button btnUpdate;
         private System.Windows.Forms.Button btnHapus;
         private System.Windows.Forms.DataGridView dataGridViewBuku;
+        private System.Windows.Forms.Button button1;
     }
 }

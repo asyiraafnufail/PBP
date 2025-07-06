@@ -27,18 +27,21 @@ namespace PBP
 
         private void btnAnggota_Click(object sender, EventArgs e)
         {
+            this.Hide();
             FormAnggota formAnggota = new FormAnggota();
             formAnggota.Show();
         }
 
         private void btnBuku_Click(object sender, EventArgs e)
         {
+            this.Hide();
             FormBuku formBuku = new FormBuku();
             formBuku.Show();
         }
 
         private void btnPeminjaman_Click(object sender, EventArgs e)
         {
+            this.Hide();
             FormPeminjaman formPeminjaman = new FormPeminjaman();
             formPeminjaman.Show();
         }

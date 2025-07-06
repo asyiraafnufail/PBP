@@ -1,14 +1,16 @@
 ﻿using System;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Windows.Forms;
-using System.Configuration;
 
 namespace PBP
 {
     public partial class FormPeminjaman : Form
     {
         private readonly string connStr = ConfigurationManager.ConnectionStrings["PBP.Properties.Settings.PBPConnectionString"].ConnectionString;
+        private bool isNavigatingBack = false;
 
         public FormPeminjaman()
         {
@@ -210,6 +212,54 @@ namespace PBP
                     MessageBox.Show($"Terjadi error saat memilih baris: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
+
+        private void FormPeminjaman_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing && !isNavigatingBack)
+            {
+                DialogResult result = MessageBox.Show("Apakah Anda yakin ingin keluar dari aplikasi?", "Konfirmasi Keluar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    Application.Exit();
+                }
+                else
+                {
+                    e.Cancel = true;
+                }
+            }
+        }
+
+        private void btnAnggota_Click(object sender, EventArgs e)
+        {
+            this.Hide(); 
+            FormAnggota formAnggota = new FormAnggota();
+            formAnggota.Show();
+        }
+
+        private void btnBuku_Click(object sender, EventArgs e)
+        {
+            this.Hide(); 
+            FormBuku formBuku = new FormBuku();
+            formBuku.Show();
+        }
+
+        private void btnPeminjaman_Click(object sender, EventArgs e)
+        {
+            this.Hide(); 
+            FormPeminjaman formPeminjaman = new FormPeminjaman();
+            formPeminjaman.Show();
+        }
+        private void btnKembali_Click(object sender, EventArgs e)
+        {
+            FormMenuAdmin adminDashboard = Application.OpenForms.OfType<FormMenuAdmin>().FirstOrDefault();
+            if (adminDashboard != null)
+            {
+                adminDashboard.Show();
+            }
+
+            this.isNavigatingBack = true;
+            this.Close();
         }
     }
 }

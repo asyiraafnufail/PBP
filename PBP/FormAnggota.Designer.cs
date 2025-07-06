@@ -45,6 +45,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.txtPasswordBaru = new System.Windows.Forms.TextBox();
             this.btnResetPassword = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -213,12 +214,24 @@
             this.btnResetPassword.UseVisualStyleBackColor = true;
             this.btnResetPassword.Click += new System.EventHandler(this.btnResetPassword_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(945, 312);
+            this.button1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(165, 36);
+            this.button1.TabIndex = 17;
+            this.button1.Text = "Kembali";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.btnKembali_Click);
+            // 
             // FormAnggota
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.ClientSize = new System.Drawing.Size(1200, 703);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.btnResetPassword);
             this.Controls.Add(this.txtPasswordBaru);
             this.Controls.Add(this.label6);
@@ -265,5 +278,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox txtPasswordBaru;
         private System.Windows.Forms.Button btnResetPassword;
+        private System.Windows.Forms.Button button1;
     }
 }

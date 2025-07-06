@@ -1,14 +1,16 @@
 ﻿using System;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Windows.Forms;
-using System.Configuration;
 
 namespace PBP
 {
     public partial class FormBuku : Form
     {
         private readonly string connStr = ConfigurationManager.ConnectionStrings["PBP.Properties.Settings.PBPConnectionString"].ConnectionString;
+        private bool isNavigatingBack = false;
 
         public FormBuku()
         {
@@ -189,6 +191,34 @@ namespace PBP
                     MessageBox.Show($"Terjadi error saat memilih baris: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
+
+        private void FormBuku_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing && !isNavigatingBack)
+            {
+                DialogResult result = MessageBox.Show("Apakah Anda yakin ingin keluar dari aplikasi?", "Konfirmasi Keluar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    Application.Exit();
+                }
+                else
+                {
+                    e.Cancel = true;
+                }
+            }
+        }
+
+        private void btnKembali_Click(object sender, EventArgs e)
+        {
+            FormMenuAdmin adminDashboard = Application.OpenForms.OfType<FormMenuAdmin>().FirstOrDefault();
+            if (adminDashboard != null)
+            {
+                adminDashboard.Show();
+            }
+
+            this.isNavigatingBack = true;
+            this.Close();
         }
     }
 }

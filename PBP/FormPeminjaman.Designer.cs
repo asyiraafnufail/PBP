@@ -42,6 +42,7 @@
             this.btnUpdate = new System.Windows.Forms.Button();
             this.btnHapus = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -179,12 +180,24 @@
             this.dataGridView1.TabIndex = 14;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(869, 267);
+            this.button1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(196, 36);
+            this.button1.TabIndex = 15;
+            this.button1.Text = "Kembali";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.btnKembali_Click);
+            // 
             // FormPeminjaman
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.ClientSize = new System.Drawing.Size(1200, 703);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnHapus);
             this.Controls.Add(this.btnUpdate);
@@ -202,6 +215,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "FormPeminjaman";
             this.Text = "FormPeminjaman";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormPeminjaman_FormClosing);
             this.Load += new System.EventHandler(this.FormPeminjaman_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
@@ -225,5 +239,6 @@
         private System.Windows.Forms.Button btnUpdate;
         private System.Windows.Forms.Button btnHapus;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Button button1;
     }
 }

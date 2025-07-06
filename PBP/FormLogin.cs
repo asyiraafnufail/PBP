@@ -48,7 +48,7 @@ namespace PBP
             if (!isConnectionTested)
             {
                 MessageBox.Show("Silakan uji koneksi ke database terlebih dahulu.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return; // Hentikan proses login jika koneksi belum diuji
+                return;
             }
 
             if (string.IsNullOrWhiteSpace(txtUsername.Text) || string.IsNullOrWhiteSpace(txtPassword.Text))
@@ -126,6 +126,23 @@ namespace PBP
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Terjadi kesalahan: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void FormLogin_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                DialogResult result = MessageBox.Show("Apakah Anda yakin ingin keluar dari aplikasi?", "Konfirmasi Keluar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (result == DialogResult.No)
+                {
+                    e.Cancel = true;
+                }
+                else
+                {
+                    Application.Exit();
                 }
             }
         }
