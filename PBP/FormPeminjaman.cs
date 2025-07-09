@@ -126,7 +126,7 @@ namespace PBP
                 return;
             }
 
-            // 2. Proses Update ke Database
+
             try
             {
                 using (SqlConnection conn = new SqlConnection(connStr))
